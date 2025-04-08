@@ -8,12 +8,12 @@
 import UIKit
 
 class ViewController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
+    
+    private let homeView = HomeView()
+    
+    //loadView()를 override해서 원하는 view를 지정
+    override func loadView() {
+        self.view = homeView
     }
-
-
 }
 
