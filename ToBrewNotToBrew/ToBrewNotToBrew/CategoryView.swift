@@ -1,7 +1,13 @@
 import UIKit
 import SnapKit
 
+protocol CategoryViewDelegate: AnyObject {
+    func categoryView(_ view: CategoryView, didSelectCategory isToBrew: Bool)
+}
+
 class CategoryView: UIView {
+
+    weak var delegate: CategoryViewDelegate?
 
     private let toggleBackgroundView: UIView = {
         let view = UIView()
@@ -28,7 +34,9 @@ class CategoryView: UIView {
     }()
 
     private var isToBrewSelected = true {
-        didSet { updateToggleState() }
+        didSet {
+            updateToggleState()
+        }
     }
 
     override init(frame: CGRect) {
@@ -74,17 +82,20 @@ class CategoryView: UIView {
     }
 
     @objc private func didTapToBrew() {
+        guard !isToBrewSelected else { return }
         isToBrewSelected = true
+        delegate?.categoryView(self, didSelectCategory: true)
     }
 
     @objc private func didTapNotToBrew() {
+        guard isToBrewSelected else { return }
         isToBrewSelected = false
+        delegate?.categoryView(self, didSelectCategory: false)
     }
 
     private func updateToggleState() {
         let selectedColor = UIColor.white
         let unselectedColor = UIColor.clear
-
         let selectedTextColor = UIColor(red: 0.29, green: 0.18, blue: 0.17, alpha: 1.0)
         let unselectedTextColor = UIColor.lightGray
 
