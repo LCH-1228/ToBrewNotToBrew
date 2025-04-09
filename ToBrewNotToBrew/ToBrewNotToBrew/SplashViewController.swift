@@ -12,7 +12,7 @@ class SplashViewController: UIViewController {
     
     private func configureUI() {
         //스플래쉬 배경색 지정
-        view.backgroundColor = UIColor(named: "#52371D")
+        view.backgroundColor = .splash
         
         logoImage.image = UIImage(named: "logo")
         // 이미지의 가로세로 비율을 유지하면서 이미지뷰 크기에 맞게 최대한 크게 보여주도록 설정
