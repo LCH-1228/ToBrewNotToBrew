@@ -11,6 +11,7 @@ struct Drink {
     let name: String
     let price: Int
     let imageName: String
+    var quantity: Int
 }
 
 struct EmptyCart {
@@ -18,20 +19,27 @@ struct EmptyCart {
     let status: String
 }
 
-struct Menu {
-    var menuArr: [Drink] = []
-    
-    mutating func makeMenu(_name: String, _price: Int, _imageName: String) {
-        let newDrink = Drink(name: _name, price: _price, imageName: _imageName)
-        menuArr.append(newDrink)
-    }
-    
-    mutating func deleteMenu(name: String) {
-        if let index = menuArr.firstIndex(where: { $0.name == name }) {
-            menuArr.remove(at: index)
-        }
-    }
+struct OrderItem {
+    let name: String
+    let price: Int
+    let imageName: String
+    var quantity: Int
 }
+
+//struct Menu {
+//    var menuArr: [Drink] = []
+//    
+//    mutating func makeMenu(_name: String, _price: Int, _imageName: String) {
+//        let newDrink = Drink(name: _name, price: _price, imageName: _imageName)
+//        menuArr.append(newDrink)
+//    }
+//    
+//    mutating func deleteMenu(name: String) {
+//        if let index = menuArr.firstIndex(where: { $0.name == name }) {
+//            menuArr.remove(at: index)
+//        }
+//    }
+//}
 
 
 

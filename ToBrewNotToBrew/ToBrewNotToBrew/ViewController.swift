@@ -7,15 +7,32 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, MenuSelectionDelegate {
+    // 비어있는 아이템 배열 생성
+    var orderItem: [OrderItem] = []
+    
+    // 메뉴가 선택될 때 실행되는 메서드
+    func didSelectMenuItem(_ item: OrderItem) {
+//        orderItem.append(item)
+        orderTableView.updateOrders(orderItem)
+        
+    }
+    
     // 테이블 뷰 생성
     let orderTableView = TableView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        // Do any additional setup after loading the view.
+        
+        // 더미 데이터
+        let testItem = OrderItem(name: "Latte", price: 3000, imageName: "latte", quantity: 1)
+        let testItem2 = OrderItem(name: "Latte", price: 3000, imageName: "latte", quantity: 1)
+        
+        // 더미 데이터를 받아와서 updateOrders 메서드 실행
+        orderTableView.updateOrders([testItem, testItem2])
     }
+    
     private func setupUI() {
         view.backgroundColor = .white
         view.addSubview(orderTableView)
