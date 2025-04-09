@@ -34,9 +34,7 @@ class CategoryView: UIView {
     }()
 
     private var isToBrewSelected = true {
-        didSet {
-            updateToggleState()
-        }
+        didSet { updateToggleState() }
     }
 
     override init(frame: CGRect) {
@@ -54,8 +52,9 @@ class CategoryView: UIView {
     private func setupLayout() {
         addSubview(toggleBackgroundView)
         toggleBackgroundView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(100)
+            make.top.equalToSuperview().offset(0)
             make.leading.equalToSuperview().offset(28)
+            make.centerY.equalToSuperview()
             make.trailing.equalToSuperview().inset(28)
             make.height.equalTo(52)
         }
