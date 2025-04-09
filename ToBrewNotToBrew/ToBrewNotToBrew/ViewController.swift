@@ -27,12 +27,12 @@ class ViewController: UIViewController {
             Menu(name: "Mojito", price: 5000, image: "mojito", category: .notToBrew),
             Menu(name: "Orange Juice", price: 4800, image: "orangeJuice", category: .notToBrew)
         ]
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
+    
+    private let homeView = HomeView()
+    
+    //loadView()를 override해서 원하는 view를 지정
+    override func loadView() {
+        self.view = homeView
     }
-
-
 }
 
