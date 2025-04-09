@@ -26,11 +26,13 @@ class ViewController: UIViewController, MenuSelectionDelegate {
         setupUI()
         
         // 더미 데이터
-        let testItem = OrderItem(name: "Latte", price: 3000, imageName: "latte", quantity: 1)
-        let testItem2 = OrderItem(name: "Latte", price: 3000, imageName: "latte", quantity: 1)
+//        let testItem = OrderItem(name: "Latte", price: 3000, imageName: "latte", quantity: 1)
+//        let testItem2 = OrderItem(name: "Latte", price: 3000, imageName: "latte", quantity: 1)
+//        let testItem3 = OrderItem(name: "Latte", price: 3000, imageName: "latte", quantity: 1)
+
         
         // 더미 데이터를 받아와서 updateOrders 메서드 실행
-        orderTableView.updateOrders([testItem, testItem2])
+//        orderTableView.updateOrders([testItem, testItem2, testItem3])
     }
     
     private func setupUI() {
