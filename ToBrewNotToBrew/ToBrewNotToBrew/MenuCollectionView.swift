@@ -7,12 +7,17 @@
 import UIKit
 import SnapKit
 
-class MenuCollectionView: UIView {
+protocol MenuCollectionViewDelegate: AnyObject {
+    func cellTapped(_ index: IndexPath)
+}
+
+class MenuCollectionView: UIView, ViewControllerDelegate {
     
-    let nameList = ["Creamy Latte", "Creamy Latte2", "Creamy Latte3", "Creamy Latte4"]
-    let priceList = [4000, 4100, 4200, 4300]
-    let imageList = ["CreamLatte", "CreamLatte2", "CreamLatte3", "CreamLatte4"]
+    weak var delegate: MenuCollectionViewDelegate?
+    
     let size = UIScreen.main.bounds
+    
+    var menus = [Menu]()
     
     let titleLabel: UILabel = {
         let label = UILabel()
@@ -39,7 +44,7 @@ class MenuCollectionView: UIView {
         layout.minimumLineSpacing = 12
         layout.minimumInteritemSpacing = 12
         layout.itemSize = .init(width: (size.width - 52) / 2, height: (size.width / 2) * 1.45)
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        layout.sectionInset = UIEdgeInsets(top:16, left: 20, bottom: 16, right: 20)
         
         layout.headerReferenceSize = CGSize(width: 0, height: 0)
         layout.footerReferenceSize = CGSize(width: 0, height: 0)
@@ -48,7 +53,7 @@ class MenuCollectionView: UIView {
         layout.sectionFootersPinToVisibleBounds = false
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .clear
+        collectionView.backgroundColor = .gray
         
         return collectionView
     }()
@@ -60,7 +65,7 @@ class MenuCollectionView: UIView {
         menuCollectionView.delegate = self
         menuCollectionView.dataSource = self
         
-        menuCollectionView.register(MenuCollectionViewCell.self, forCellWithReuseIdentifier: "testCell")
+        menuCollectionView.register(MenuCollectionViewCell.self, forCellWithReuseIdentifier: "menuCell")
         
         configUI()
         
@@ -69,12 +74,18 @@ class MenuCollectionView: UIView {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
+    
+    func setData(menuData: [Menu]) {
+        self.menus = menuData
+        menuCollectionView.reloadData()
+        print("데이터 업데이트 완료")
+    }
 }
 
 private extension MenuCollectionView {
     
     func configUI() {
-        self.backgroundColor = .clear
+        self.backgroundColor = .white
         addOnSubview()
         setConstraints()
     }
@@ -99,38 +110,51 @@ private extension MenuCollectionView {
         }
         
         menuCollectionView.snp.makeConstraints {
-            $0.width.equalToSuperview()
-            $0.height.equalTo((((size.width / 2) * 1.45) * 2) + 36)
             $0.leading.equalTo(self.snp.leading)
             $0.trailing.equalTo(self.snp.trailing)
             $0.top.equalTo(titleLabel.snp.bottom).offset(20)
+            $0.bottom.equalTo(self.snp.bottom).offset(-50)
         }
     }
 }
 
-extension MenuCollectionView: UICollectionViewDelegate {
+extension MenuCollectionView: UICollectionViewDelegate, UICollectionViewDataSource {
     
-}
-
-extension MenuCollectionView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return nameList.count
+        return menus.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "testCell", for: indexPath) as? MenuCollectionViewCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "menuCell", for: indexPath) as? MenuCollectionViewCell else {
             return UICollectionViewCell()
         }
         
-        cell.nameLabel.text = nameList[indexPath.item]
-        cell.priceLabel.text = String(priceList[indexPath.item])
-        cell.menuImage.image = UIImage(named: "CreamyLatte")
+        cell.nameLabel.text = menus[indexPath.item].name
+        cell.priceLabel.text = String(menus[indexPath.item].price)
+        cell.menuImage.image = UIImage(named: menus[indexPath.item].image)
         
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        delegate?.cellTapped(indexPath)
+        
+        guard let cell = collectionView.cellForItem(at: indexPath) as? MenuCollectionViewCell else { return }
+        
+        let config = UIImage.SymbolConfiguration(weight: .heavy)
+        cell.button.setImage(UIImage(systemName: "minus", withConfiguration: config), for: .normal)
+    }
+}
+
+
+protocol MenuCollectionViewCellDelegate: AnyObject {
+    func cellTapped(_ cell: MenuCollectionViewCell)
 }
 
 class MenuCollectionViewCell: UICollectionViewCell {
+    
+    weak var cellViewDelegate: MenuCollectionView?
     
     let imageFream: UIView = {
         let imageFrame = UIView()
