@@ -8,7 +8,7 @@
 import UIKit
 
 class ViewController: UIViewController {
-    
+    // 테이블 뷰 생성
     let orderTableView = TableView()
 
     override func viewDidLoad() {

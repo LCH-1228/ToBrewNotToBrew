@@ -56,41 +56,121 @@ extension TableView: UITableViewDelegate, UITableViewDataSource {
 
 // 테이블 뷰 셀
 class OrderItemCell: UITableViewCell {
-    let statusLabel = UILabel()
-    let cartImageView = UIImageView()
+    
+    let statusLabel = UILabel() // 기본 상태 레이블
+    let cartImageView = UIImageView() // 기본 상태 이미지(카트)
+    let coffeeImageView = UIImageView() // 커피 이미지
+    let nameLabel = UILabel() // 커피 이름
+    let priceLabel = UILabel() // 가격
+    let minueButton = UIButton() // 마이너스 버튼
+    let plusButton = UIButton() // 플러스 버튼
+    let quantityLabel = UILabel() // 수량
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupUI()
+        purchaseSetupUI()
     }
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        setupUI()
+        purchaseSetupUI()
     }
-    
-    private func setupUI() {
+    // 1. 주문내역에 아무것도 없을 때(기본 상태)
+    private func basicSetupUI() {
         [statusLabel, cartImageView].forEach {
             contentView.addSubview($0)
         }
+        // 카트 이미지 UI 설정
         cartImageView.contentMode = .scaleAspectFit
         cartImageView.clipsToBounds = true
         
         cartImageView.snp.makeConstraints {
-            $0.width.equalTo(32)
+            $0.width.equalTo(100)
             $0.top.equalToSuperview().offset(55)
             $0.bottom.equalToSuperview().offset(81)
             $0.centerX.equalToSuperview()
         }
         
-        
+        // 기본상태(주문내역x) 레이블 UI 설정
         statusLabel.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.top.equalTo(cartImageView.snp.bottom).offset(10)
             
         }
     }
+    // 2. 주문내역에 상품 들어올 때
+    private func purchaseSetupUI() {
+        [coffeeImageView, nameLabel, priceLabel, minueButton, plusButton, quantityLabel].forEach {
+            contentView.addSubview($0)
+        }
+        // 커피 이미지 UI 설정
+        coffeeImageView.contentMode = .scaleAspectFit
+        coffeeImageView.clipsToBounds = true
+        
+        coffeeImageView.snp.makeConstraints {
+            $0.width.height.equalTo(64)
+            $0.top.equalToSuperview().offset(55)
+
+            $0.leading.equalToSuperview().offset(20)
+            $0.centerY.equalToSuperview()
+        }
+        // 커피 이름 레이블 UI 설정
+        nameLabel.text = "Latte"
+        nameLabel.font = .systemFont(ofSize: 16)
+        
+        nameLabel.snp.makeConstraints {
+            $0.leading.equalTo(coffeeImageView.snp.trailing).offset(12)
+        }
+        // 커피 가격 레이블 UI 설정
+        priceLabel.text = "4,000원"
+        priceLabel.font = .boldSystemFont(ofSize: 18)
+        
+        priceLabel.snp.makeConstraints {
+            $0.leading.equalTo(coffeeImageView.snp.trailing).offset(12)
+            $0.top.equalTo(nameLabel.snp.bottom).offset(10)
+        }
+        // 마이너스 버튼 UI 설정
+        minueButton.setTitle("-", for: .normal)
+        minueButton.setTitleColor(.white, for: .normal)
+        minueButton.backgroundColor = .brown
+        minueButton.layer.cornerRadius = 15
+        
+        minueButton.snp.makeConstraints {
+            $0.size.equalTo(30)
+            $0.centerY.equalTo(coffeeImageView.snp.centerY)
+            $0.leading.equalTo(nameLabel.snp.trailing).offset(50)
+        }
+        // 플러스 버튼 UI 설정
+        plusButton.setTitle("+", for: .normal)
+        plusButton.setTitleColor(.white, for: .normal)
+        plusButton.backgroundColor = .brown
+        plusButton.layer.cornerRadius = 15
+        
+        plusButton.snp.makeConstraints {
+            $0.size.equalTo(30)
+            $0.centerY.equalTo(coffeeImageView.snp.centerY)
+            $0.leading.equalTo(quantityLabel.snp.trailing).offset(16)
+        }
+        // 수량 레이블 UI 설정
+        quantityLabel.text = "0"
+        quantityLabel.font = .systemFont(ofSize: 16)
+        
+        quantityLabel.snp.makeConstraints {
+            $0.leading.equalTo(minueButton.snp.trailing).offset(16)
+            $0.centerY.equalTo(coffeeImageView.snp.centerY)
+            
+        }
+        
+        
+    }
     func configure() {
         statusLabel.text = "장바구니가 비어있습니다."
         cartImageView.image = UIImage(named: "shoppingCart")
     }
+    func configure2() {
+        coffeeImageView.image = UIImage(named: "latte")
+        nameLabel.text = "Latte"
+        priceLabel.text = "4,000원"
+    }
+    
+    
 }
