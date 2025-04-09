@@ -9,9 +9,12 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    override func loadView() {
+        view = CategoryView()
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+
     }
 
 
