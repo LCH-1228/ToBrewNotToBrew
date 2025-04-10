@@ -11,7 +11,7 @@ protocol MenuCollectionViewDelegate: AnyObject {
     func cellTapped(_ index: IndexPath)
 }
 
-class MenuCollectionView: UIView, ViewControllerDelegate {
+class MenuCollectionView: UIView {
     
     weak var delegate: MenuCollectionViewDelegate?
     
@@ -44,7 +44,7 @@ class MenuCollectionView: UIView, ViewControllerDelegate {
         layout.minimumLineSpacing = 12
         layout.minimumInteritemSpacing = 12
         layout.itemSize = .init(width: (size.width - 52) / 2, height: (size.width / 2) * 1.45)
-        layout.sectionInset = UIEdgeInsets(top:16, left: 20, bottom: 16, right: 20)
+        layout.sectionInset = UIEdgeInsets(top:0, left: 20, bottom: 0, right: 20)
         
         layout.headerReferenceSize = CGSize(width: 0, height: 0)
         layout.footerReferenceSize = CGSize(width: 0, height: 0)
@@ -53,7 +53,8 @@ class MenuCollectionView: UIView, ViewControllerDelegate {
         layout.sectionFootersPinToVisibleBounds = false
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .gray
+        collectionView.backgroundColor = .white
+        collectionView.isScrollEnabled = false
         
         return collectionView
     }()
@@ -112,8 +113,8 @@ private extension MenuCollectionView {
         menuCollectionView.snp.makeConstraints {
             $0.leading.equalTo(self.snp.leading)
             $0.trailing.equalTo(self.snp.trailing)
-            $0.top.equalTo(titleLabel.snp.bottom).offset(20)
-            $0.bottom.equalTo(self.snp.bottom).offset(-50)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(0)
+            $0.bottom.equalTo(self.snp.bottom).offset(0)
         }
     }
 }
