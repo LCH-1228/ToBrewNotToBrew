@@ -95,4 +95,5 @@ ViewController
 |----------|-----------|------|
 | CategoryView 버튼 그림자 짤림 | ViewController에서 CategoryViewdml top offset을 4로 설정하고,<br> HomeView에서 firstView height를 60으로 설정하여 버튼 위아래의 그림자 공간 확보 | 레이아웃 관련 문제 |
 |  |  |  |
-
+|  |  |  |
+|  |  |  |
