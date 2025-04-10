@@ -9,6 +9,7 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
     let categoryView = CategoryView()
     let myView = MenuCollectionView()
     
+    
     // 비어있는 아이템 배열 생성
     var orderItem: [OrderItem] = []
     var selectedMenu: [String : Int] = [ : ]
@@ -39,7 +40,7 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         print("뷰컨 로딩 완료")
         
         view.backgroundColor = .white
@@ -60,6 +61,7 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
         
         //데이터 주입
         myView.setData(menuData: currentMenu)
+        
         
         //collectionView에서 클릭된 cell 확인을 위한 delegate 지정
         myView.delegate = self
@@ -129,6 +131,8 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
             let price = menus.filter({$0.name == ammount.key})[0].price
             let quantity = selectedMenu[ammount.key] ?? 0
             totalPrice += price * quantity
+            
+            print(ammount.key, price, quantity)
         }
         
         if let index = orderItem.firstIndex(where: { $0.name == item.name}) {
