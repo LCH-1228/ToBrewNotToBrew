@@ -65,6 +65,17 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
             $0.trailing.equalTo(homeView.secondView.snp.trailing)
             $0.height.equalTo(1230)
         }
+        
+        homeView.onOrderButtonTapped = { [weak self] in
+            guard let self = self else { return }
+            
+            let alert = UIAlertController(title: "주문하기", message: "주문을 진행하시겠습니까?", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "확인", style: .default))
+            alert.addAction(UIAlertAction(title: "취소", style: .cancel))
+            
+            self.present(alert, animated: true)
+        }
+        
     }
     
     func categoryView(_ view: CategoryView, didSelectCategory isToBrew: Bool) {
