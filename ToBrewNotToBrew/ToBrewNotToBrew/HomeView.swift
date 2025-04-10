@@ -14,7 +14,7 @@ class HomeView: UIView {
     
     let firstView = UIView()
     let secondView = UIView()
-    private let thirdView = UIView()
+    let thirdView = UIView()
     
     // 뷰를 코드로 만들 때 호출되는 초기화 함수
     override init(frame: CGRect) {
@@ -48,7 +48,7 @@ class HomeView: UIView {
         
         firstView.backgroundColor = .white
         secondView.backgroundColor = .white
-        thirdView.backgroundColor = .blue
+        thirdView.backgroundColor = .white
         
         saparator.backgroundColor = .lightGray
         
@@ -106,7 +106,7 @@ class HomeView: UIView {
         
         thirdView.snp.makeConstraints {
             $0.top.equalTo(secondView.snp.bottom)
-            $0.height.equalTo(300)
+            $0.height.equalTo(1000)
         }
         
         saparator.snp.makeConstraints {

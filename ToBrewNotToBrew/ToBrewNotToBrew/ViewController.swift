@@ -1,30 +1,45 @@
 import UIKit
 import SnapKit
-
-class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionViewDelegate {
-
-
+   
+class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionViewDelegate, MenuSelectionDelegate {
+    
+    // 비어있는 아이템 배열 생성
+    var orderItem: [OrderItem] = []
+    
+    // 메뉴가 선택될 때 실행되는 메서드
+    func didSelectMenuItem(_ item: OrderItem) {
+        if let index = orderItem.firstIndex(where: { $0.name == item.name}) {
+            orderItem[index].quantity += 1
+        } else {
+            orderItem.append(item)
+        }
+        orderTableView.updateOrders(orderItem)
+        
+    }
+    
+    // 각 뷰 생성
+    let orderTableView = TableView()
     let homeView = HomeView()
     let categoryView = CategoryView()
     let myView = MenuCollectionView()
         
     let menus: [Menu] = [
-        Menu(name: "Americano", price: 4300, image: "americano", category: .toBrew),
-        Menu(name: "Cappuccino", price: 4500, image: "cappuccino", category: .toBrew),
-        Menu(name: "Cream Latte", price: 4600, image: "creamLatte", category: .toBrew),
-        Menu(name: "Frappe", price: 4600, image: "frappe", category: .toBrew),
-        Menu(name: "Irish Coffee", price: 4800, image: "irishCoffee", category: .toBrew),
-        Menu(name: "Latte", price: 4600, image: "latte", category: .toBrew),
-        Menu(name: "Macchiato", price: 4800, image: "macchiato", category: .toBrew),
+        Menu(name: "Americano", price: 4300, image: "americano", quantity: 1, category: .toBrew),
+        Menu(name: "Cappuccino", price: 4500, image: "cappuccino", quantity: 1, category: .toBrew),
+        Menu(name: "Cream Latte", price: 4600, image: "creamLatte", quantity: 1, category: .toBrew),
+        Menu(name: "Frappe", price: 4600, image: "frappe", quantity: 1, category: .toBrew),
+        Menu(name: "Irish Coffee", price: 4800, image: "irishCoffee", quantity: 1, category: .toBrew),
+        Menu(name: "Latte", price: 4600, image: "latte", quantity: 1, category: .toBrew),
+        Menu(name: "Macchiato", price: 4800, image: "macchiato", quantity: 1, category: .toBrew),
         
-        Menu(name: "Cherry Coke", price: 4000, image: "cherryCoke", category: .notToBrew),
-        Menu(name: "Coke", price: 4000, image: "coke", category: .notToBrew),
-        Menu(name: "Grapefruit Juice ", price: 4800, image: "grapefruitJuice", category: .notToBrew),
-        Menu(name: "Green Juice", price: 4800, image: "greenJuice", category: .notToBrew),
-        Menu(name: "Ice Tea", price: 4300, image: "iceTea", category: .notToBrew),
-        Menu(name: "Lime Juice", price: 4300, image: "limeJuice", category: .notToBrew),
-        Menu(name: "Mojito", price: 5000, image: "mojito", category: .notToBrew),
-        Menu(name: "Orange Juice", price: 4800, image: "orangeJuice", category: .notToBrew)
+        Menu(name: "Cherry Coke", price: 4000, image: "cherryCoke", quantity: 1, category: .notToBrew),
+        Menu(name: "Coke", price: 4000, image: "coke", quantity: 1, category: .notToBrew),
+        Menu(name: "Grapefruit Juice ", price: 4800, image: "grapefruitJuice", quantity: 1, category: .notToBrew),
+        Menu(name: "Green Juice", price: 4800, image: "greenJuice", quantity: 1, category: .notToBrew),
+        Menu(name: "Ice Tea", price: 4300, image: "iceTea", quantity: 1, category: .notToBrew),
+        Menu(name: "Lime Juice", price: 4300, image: "limeJuice", quantity: 1, category: .notToBrew),
+        Menu(name: "Mojito", price: 5000, image: "mojito", quantity: 1, category: .notToBrew),
+        Menu(name: "Orange Juice", price: 4800, image: "orangeJuice", quantity: 1, category: .notToBrew)
     ]
     
     var currentMenu: [Menu] = []
@@ -34,6 +49,8 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupUI()
+
         print("뷰컨 로딩 완료")
         
         view.backgroundColor = .white
@@ -41,6 +58,7 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
         self.view = homeView
         homeView.firstView.addSubview(categoryView)
         homeView.secondView.addSubview(myView)
+        homeView.thirdView.addSubview(orderTableView)
         
         categoryView.delegate = self
         
@@ -76,6 +94,11 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
             self.present(alert, animated: true)
         }
         
+        orderTableView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+//         더미 데이터를 받아와서 updateOrders 메서드 실행
+        orderTableView.updateOrders(orderItem)
     }
     
     func categoryView(_ view: CategoryView, didSelectCategory isToBrew: Bool) {
@@ -91,7 +114,26 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
     
     //어떤 cell이 클릭되었는지 출력 장바구니 UITable뷰와 연동 필요
     func cellTapped(_ name: String) {
-        print(menus.filter({$0.name == name})[0])
+        if let menu = menus.first(where: {$0.name == name}) {
+            let item = OrderItem(name: menu.name,
+                                 price: menu.price,
+                                 imageName: menu.image,
+                                 quantity: 1,
+                                 category: menu.category)
+            didSelectMenuItem(item)
+        }
+    }
+    
+    private func setupUI() {
+        view.backgroundColor = .white
+//        view.addSubview(orderTableView)
+//        
+//        orderTableView.snp.makeConstraints {
+//            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
+//            $0.leading.equalToSuperview().offset(20)
+//            $0.trailing.equalToSuperview().offset(-20)
+//            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+//        }
     }
 
 }
