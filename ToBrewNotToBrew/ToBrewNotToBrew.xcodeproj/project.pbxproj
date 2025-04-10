@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B83812E62DA69F9600F85B0F /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = B83812E52DA69F9600F85B0F /* SnapKit */; };
+		67F2339D2DA60A6C0064BE4F /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 67F2339C2DA60A6C0064BE4F /* SnapKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,7 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B83812E62DA69F9600F85B0F /* SnapKit in Frameworks */,
+				67F2339D2DA60A6C0064BE4F /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,7 +83,7 @@
 			);
 			name = ToBrewNotToBrew;
 			packageProductDependencies = (
-				B83812E52DA69F9600F85B0F /* SnapKit */,
+				67F2339C2DA60A6C0064BE4F /* SnapKit */,
 			);
 			productName = ToBrewNotToBrew;
 			productReference = 9B33482C2DA3B6F300A5B10C /* ToBrewNotToBrew.app */;
@@ -114,7 +114,7 @@
 			mainGroup = 9B3348232DA3B6F300A5B10C;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				B83812E42DA69F9600F85B0F /* XCRemoteSwiftPackageReference "SnapKit" */,
+				67F2339B2DA60A6C0064BE4F /* XCRemoteSwiftPackageReference "SnapKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9B33482D2DA3B6F300A5B10C /* Products */;
@@ -344,7 +344,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		B83812E42DA69F9600F85B0F /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+		67F2339B2DA60A6C0064BE4F /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
 			requirement = {
@@ -355,9 +355,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		B83812E52DA69F9600F85B0F /* SnapKit */ = {
+		67F2339C2DA60A6C0064BE4F /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B83812E42DA69F9600F85B0F /* XCRemoteSwiftPackageReference "SnapKit" */;
+			package = 67F2339B2DA60A6C0064BE4F /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
 		};
 /* End XCSwiftPackageProductDependency section */
