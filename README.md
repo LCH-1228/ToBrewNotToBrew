@@ -32,7 +32,6 @@ To Brew / Not To Brew 메뉴 카테고리 구분
  프로젝트 계기
 - UIKit & SnapKit 기반 레이아웃 학습
 - Delegate Pattern / MVC 구조 이해 & 적용
-- 키오스크 UI/UX를 내 손으로 직접 만들어보고 싶어서
 
 
 # 주요기능
