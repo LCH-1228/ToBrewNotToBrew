@@ -10,6 +10,7 @@ class HomeView: UIView {
     let paymentTitleLabel = UILabel()
     let paymentAmountLabel = UILabel()
     let orderButton = UIButton()
+    var onOrderButtonTapped: (() -> Void)?
     
     let firstView = UIView()
     let secondView = UIView()
@@ -55,15 +56,28 @@ class HomeView: UIView {
         paymentTitleLabel.text = "결제예정금액"
         paymentTitleLabel.textColor = .black
         paymentTitleLabel.font = UIFont(name: "NotoSansKR-Bold", size: 16)
-        paymentAmountLabel.text = "0원"
         paymentAmountLabel.textColor = .black
         paymentAmountLabel.font = UIFont(name: "NotoSansKR-Bold", size: 20)
+        
+        let paymentAmount = 0
+        paymentAmountLabel.text = "\(paymentAmount) 원"
+        
+        // paymentAmount가 0보다 클 때 버튼 활성화
+        orderButton.isEnabled = paymentAmount > 0
+        // paymentAmount가 0보다 클 때 불투명, 크지 않다면 반투명
+        orderButton.alpha = paymentAmount > 0 ? 1.0 : 0.5
         
         orderButton.backgroundColor = .button
         orderButton.setTitle("주문하기", for: .normal)
         orderButton.titleLabel?.font = UIFont(name: "NotoSansKR-Regular", size: 16)
         orderButton.setTitleColor(.white, for: .normal)
         orderButton.layer.cornerRadius = 30
+        
+        orderButton.addTarget(self, action: #selector(orderButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc private func orderButtonTapped() {
+        onOrderButtonTapped?()
     }
     
     private func setupConstraints() {
