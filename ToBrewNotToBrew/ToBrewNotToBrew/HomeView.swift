@@ -10,10 +10,11 @@ class HomeView: UIView {
     let paymentTitleLabel = UILabel()
     let paymentAmountLabel = UILabel()
     let orderButton = UIButton()
+    var onOrderButtonTapped: (() -> Void)?
     
-    private let firstView = UIView()
-    private let secondView = UIView()
-    private let thirdView = UIView()
+    let firstView = UIView()
+    let secondView = UIView()
+    let thirdView = UIView()
     
     // 뷰를 코드로 만들 때 호출되는 초기화 함수
     override init(frame: CGRect) {
@@ -39,30 +40,44 @@ class HomeView: UIView {
         [firstView, secondView, thirdView]
             .forEach { stackView.addArrangedSubview($0) }
         
-        headerLogoImage.image = UIImage(named: "headerLogo")
+        
+        headerLogoImage.image = UIImage(named: "test")
         headerLogoImage.contentMode = .scaleAspectFit
         
         stackView.axis = .vertical
         stackView.alignment = .fill
         
-        firstView.backgroundColor = .red
-        secondView.backgroundColor = .green
-        thirdView.backgroundColor = .blue
+        firstView.backgroundColor = .white
+        secondView.backgroundColor = .white
+        thirdView.backgroundColor = .white
         
         saparator.backgroundColor = .lightGray
         
         paymentTitleLabel.text = "결제예정금액"
         paymentTitleLabel.textColor = .black
         paymentTitleLabel.font = UIFont(name: "NotoSansKR-Bold", size: 16)
-        paymentAmountLabel.text = "0원"
         paymentAmountLabel.textColor = .black
         paymentAmountLabel.font = UIFont(name: "NotoSansKR-Bold", size: 20)
+        
+        let paymentAmount = 0
+        paymentAmountLabel.text = "\(paymentAmount) 원"
+        
+        // paymentAmount가 0보다 클 때 버튼 활성화
+        orderButton.isEnabled = paymentAmount > 0
+        // paymentAmount가 0보다 클 때 불투명, 크지 않다면 반투명
+        orderButton.alpha = paymentAmount > 0 ? 1.0 : 0.5
         
         orderButton.backgroundColor = .button
         orderButton.setTitle("주문하기", for: .normal)
         orderButton.titleLabel?.font = UIFont(name: "NotoSansKR-Regular", size: 16)
         orderButton.setTitleColor(.white, for: .normal)
         orderButton.layer.cornerRadius = 30
+        
+        orderButton.addTarget(self, action: #selector(orderButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc private func orderButtonTapped() {
+        onOrderButtonTapped?()
     }
     
     private func setupConstraints() {
@@ -83,15 +98,16 @@ class HomeView: UIView {
         }
         
         firstView.snp.makeConstraints {
-            $0.height.equalTo(300)
+            $0.height.equalTo(52)
         }
         
         secondView.snp.makeConstraints {
-            $0.height.equalTo(300)
+            $0.height.equalTo(1250)
         }
         
         thirdView.snp.makeConstraints {
-            $0.height.equalTo(300)
+            $0.top.equalTo(secondView.snp.bottom)
+            $0.height.equalTo(1000)
         }
         
         saparator.snp.makeConstraints {

@@ -1,70 +1,61 @@
 import UIKit
 import SnapKit
-
-protocol ViewControllerDelegate: AnyObject {
-    func setData(menuData: [Menu])
-}
-
-class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionViewDelegate {
-
-
-    private let categoryView = CategoryView()
-
+   
+class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionViewDelegate, MenuSelectionDelegate {
     
+    
+    
+    // 각 뷰 생성
+    let orderTableView = TableView()
+    let homeView = HomeView()
+    let categoryView = CategoryView()
     let myView = MenuCollectionView()
+    
+    // 비어있는 아이템 배열 생성
+    var orderItem: [OrderItem] = []
+    var selectedMenu: [String : Int] = [ : ]
         
     let menus: [Menu] = [
-        Menu(name: "Americano", price: 4300, image: "americano", category: .toBrew),
-        Menu(name: "Cappuccino", price: 4500, image: "cappuccino", category: .toBrew),
-        Menu(name: "Cream Latte", price: 4600, image: "creamLatte", category: .toBrew),
-        Menu(name: "Frappe", price: 4600, image: "frappe", category: .toBrew),
-        Menu(name: "Irish Coffee", price: 4800, image: "irishCoffee", category: .toBrew),
-        Menu(name: "Latte", price: 4600, image: "latte", category: .toBrew),
-        Menu(name: "Macchiato", price: 4800, image: "macchiato", category: .toBrew),
+        Menu(name: "Americano", price: 4300, image: "americano", quantity: 1, category: .toBrew),
+        Menu(name: "Cappuccino", price: 4500, image: "cappuccino", quantity: 1, category: .toBrew),
+        Menu(name: "Cream Latte", price: 4600, image: "creamLatte", quantity: 1, category: .toBrew),
+        Menu(name: "Frappe", price: 4600, image: "frappe", quantity: 1, category: .toBrew),
+        Menu(name: "Irish Coffee", price: 4800, image: "irishCoffee", quantity: 1, category: .toBrew),
+        Menu(name: "Latte", price: 4600, image: "latte", quantity: 1, category: .toBrew),
+        Menu(name: "Macchiato", price: 4800, image: "macchiato", quantity: 1, category: .toBrew),
         
-        Menu(name: "Cherry Coke", price: 4000, image: "cherryCoke", category: .notToBrew),
-        Menu(name: "Coke", price: 4000, image: "coke", category: .notToBrew),
-        Menu(name: "Grapefruit Juice ", price: 4800, image: "grapefruitJuice", category: .notToBrew),
-        Menu(name: "Green Juice", price: 4800, image: "greenJuice", category: .notToBrew),
-        Menu(name: "Ice Tea", price: 4300, image: "iceTea", category: .notToBrew),
-        Menu(name: "Lime Juice", price: 4300, image: "limeJuice", category: .notToBrew),
-        Menu(name: "Mojito", price: 5000, image: "mojito", category: .notToBrew),
-        Menu(name: "Orange Juice", price: 4800, image: "orangeJuice", category: .notToBrew)
+        Menu(name: "Cherry Coke", price: 4000, image: "cherryCoke", quantity: 1, category: .notToBrew),
+        Menu(name: "Coke", price: 4000, image: "coke", quantity: 1, category: .notToBrew),
+        Menu(name: "Grapefruit Juice ", price: 4800, image: "grapefruitJuice", quantity: 1, category: .notToBrew),
+        Menu(name: "Green Juice", price: 4800, image: "greenJuice", quantity: 1, category: .notToBrew),
+        Menu(name: "Ice Tea", price: 4300, image: "iceTea", quantity: 1, category: .notToBrew),
+        Menu(name: "Lime Juice", price: 4300, image: "limeJuice", quantity: 1, category: .notToBrew),
+        Menu(name: "Mojito", price: 5000, image: "mojito", quantity: 1, category: .notToBrew),
+        Menu(name: "Orange Juice", price: 4800, image: "orangeJuice", quantity: 1, category: .notToBrew)
     ]
     
     var currentMenu: [Menu] = []
     
     var isToBrew = true
     
-    //메뉴 변경 기능을 구현을 위한 테스트 버튼
-    let categoryButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("카테고리 변경", for: .normal)
-        button.backgroundColor = .blue
-        button.addTarget(self, action: #selector(categoryButtonClicked), for: .touchUpInside)
-        return button
-    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-      
-        view.backgroundColor = .white
-
-        view.addSubview(categoryView)
-        categoryView.delegate = self
-        
-        categoryView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(52)
-        }
-    }
-    
-    func categoryView(_ view: CategoryView, didSelectCategory isToBrew: Bool) {
-        // 이 안에서 메뉴 데이터는 찬호님이 처리할 예정
-        print("선택된 카테고리: \(isToBrew ? "To Brew" : "Not To Brew")")
 
         print("뷰컨 로딩 완료")
+        
+        view.backgroundColor = .white
+
+        self.view = homeView
+        homeView.firstView.addSubview(categoryView)
+        homeView.secondView.addSubview(myView)
+        homeView.thirdView.addSubview(orderTableView)
+        
+        // thirdView의 크기가 한정되어 있어도, 테이블 뷰의 크기대로 들어감.
+        // 테이블 뷰의 크기대로 버팀.
+        homeView.thirdView.setContentCompressionResistancePriority(.required, for: .vertical)
+
+        categoryView.delegate = self
         
         //주입할 데이터 필터링
         currentMenu = menus.filter({$0.category == .toBrew})
@@ -75,40 +66,81 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
         //collectionView에서 클릭된 cell 확인을 위한 delegate 지정
         myView.delegate = self
         
-        view.backgroundColor = .white //디버깅을 위한 배경색상 지정
-        view.addSubview(myView) //디버깅을 위한 addSubview
-        
-        //원하는 곳에 배치 후 constraint 조건 수정 필요
-        myView.snp.makeConstraints {
-            $0.edges.equalTo(view.safeAreaLayoutGuide)
+        categoryView.snp.makeConstraints {
+            $0.top.equalTo(homeView.firstView.snp.top)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(52)
         }
         
-        //테스트 버튼 추가
-        view.addSubview(categoryButton)
+        myView.snp.makeConstraints {
+            $0.top.equalTo(homeView.secondView.snp.top).offset(20)
+            $0.leading.equalTo(homeView.secondView.snp.leading)
+            $0.trailing.equalTo(homeView.secondView.snp.trailing)
+            $0.height.equalTo(1230)
+        }
         
-        // 메뉴 업데이트 기능 구현을 위한 버튼
-        categoryButton.snp.makeConstraints { make in
-            make.width.equalTo(100)
-            make.height.equalTo(50)
-            make.leading.equalToSuperview().offset(30)
-            make.bottom.equalToSuperview()
+        homeView.onOrderButtonTapped = { [weak self] in
+            guard let self = self else { return }
+            
+            let alert = UIAlertController(title: "주문하기", message: "주문을 진행하시겠습니까?", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "확인", style: .default))
+            alert.addAction(UIAlertAction(title: "취소", style: .cancel))
+            
+            self.present(alert, animated: true)
+        }
+        
+        orderTableView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+//         더미 데이터를 받아와서 updateOrders 메서드 실행
+        orderTableView.updateOrders(orderItem)
+    }
+    
+    func categoryView(_ view: CategoryView, didSelectCategory isToBrew: Bool) {
+        switch isToBrew {
+        case true:
+            currentMenu = menus.filter({$0.category == .toBrew})
+            myView.setData(menuData: currentMenu)
+        case false:
+            currentMenu = menus.filter({$0.category == .notToBrew})
+            myView.setData(menuData: currentMenu)
         }
     }
     
     //어떤 cell이 클릭되었는지 출력 장바구니 UITable뷰와 연동 필요
-    func cellTapped(_ index: IndexPath) {
-        print(index[1])
+    func cellTapped(_ name: String) {
+        let currentselected = menus.filter({$0.name == name})[0]
+                
+        let item = OrderItem(name: currentselected.name,
+                             price: currentselected.price,
+                             imageName: currentselected.image,
+                             quantity: 1,
+                             category: currentselected.category)
+        didSelectMenuItem(item)
     }
     
-    //아래 버튼 동작 카테고리 메뉴 UISegmentedControl과 연동 필요
-    @objc func categoryButtonClicked() {
-        if isToBrew == true {
-            currentMenu = menus.filter({$0.category == .notToBrew})
-            isToBrew = false
-        } else if isToBrew == false {
-            currentMenu = menus.filter({$0.category == .toBrew})
-            isToBrew = true
+    // 메뉴가 선택될 때 실행되는 메서드
+    func didSelectMenuItem(_ item: OrderItem) {
+        
+        var totalPrice:Int = 0
+        
+        let currentQuantity = selectedMenu[item.name] ?? 0
+        selectedMenu.updateValue(currentQuantity + 1, forKey: item.name)
+        
+        for ammount in selectedMenu {
+            let price = menus.filter({$0.name == ammount.key})[0].price
+            let quantity = selectedMenu[ammount.key] ?? 0
+            totalPrice += price * quantity
         }
-        myView.setData(menuData: currentMenu)
+        
+        if let index = orderItem.firstIndex(where: { $0.name == item.name}) {
+            orderItem[index].quantity += 1
+        } else {
+            orderItem.append(item)
+        }
+        
+        orderTableView.updateOrders(orderItem)
+        homeView.paymentAmountLabel.text = "\(totalPrice)"
+        
     }
 }
