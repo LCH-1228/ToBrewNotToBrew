@@ -1,17 +1,15 @@
-//
-//  ViewController.swift
-//  ToBrewNotToBrew
-//
-//  Created by Chanho Lee on 4/7/25.
-//
-
 import UIKit
+import SnapKit
 
 protocol ViewControllerDelegate: AnyObject {
     func setData(menuData: [Menu])
 }
 
-class ViewController: UIViewController, MenuCollectionViewDelegate {
+class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionViewDelegate {
+
+
+    private let categoryView = CategoryView()
+
     
     let myView = MenuCollectionView()
         
@@ -49,6 +47,23 @@ class ViewController: UIViewController, MenuCollectionViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+      
+        view.backgroundColor = .white
+
+        view.addSubview(categoryView)
+        categoryView.delegate = self
+        
+        categoryView.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(52)
+        }
+    }
+    
+    func categoryView(_ view: CategoryView, didSelectCategory isToBrew: Bool) {
+        // 이 안에서 메뉴 데이터는 찬호님이 처리할 예정
+        print("선택된 카테고리: \(isToBrew ? "To Brew" : "Not To Brew")")
+
         print("뷰컨 로딩 완료")
         
         //주입할 데이터 필터링
