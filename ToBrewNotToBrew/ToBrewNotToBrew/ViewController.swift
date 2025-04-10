@@ -1,16 +1,11 @@
 import UIKit
 import SnapKit
 
-protocol ViewControllerDelegate: AnyObject {
-    func setData(menuData: [Menu])
-}
-
 class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionViewDelegate {
 
 
-    private let categoryView = CategoryView()
-
-    
+    let homeView = HomeView()
+    let categoryView = CategoryView()
     let myView = MenuCollectionView()
         
     let menus: [Menu] = [
@@ -36,35 +31,18 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
     
     var isToBrew = true
     
-    //메뉴 변경 기능을 구현을 위한 테스트 버튼
-    let categoryButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("카테고리 변경", for: .normal)
-        button.backgroundColor = .blue
-        button.addTarget(self, action: #selector(categoryButtonClicked), for: .touchUpInside)
-        return button
-    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-      
+        print("뷰컨 로딩 완료")
+        
         view.backgroundColor = .white
 
-        view.addSubview(categoryView)
-        categoryView.delegate = self
+        self.view = homeView
+        homeView.firstView.addSubview(categoryView)
+        homeView.secondView.addSubview(myView)
         
-        categoryView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(52)
-        }
-    }
-    
-    func categoryView(_ view: CategoryView, didSelectCategory isToBrew: Bool) {
-        // 이 안에서 메뉴 데이터는 찬호님이 처리할 예정
-        print("선택된 카테고리: \(isToBrew ? "To Brew" : "Not To Brew")")
-
-        print("뷰컨 로딩 완료")
+        categoryView.delegate = self
         
         //주입할 데이터 필터링
         currentMenu = menus.filter({$0.category == .toBrew})
@@ -75,23 +53,28 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
         //collectionView에서 클릭된 cell 확인을 위한 delegate 지정
         myView.delegate = self
         
-        view.backgroundColor = .white //디버깅을 위한 배경색상 지정
-        view.addSubview(myView) //디버깅을 위한 addSubview
-        
-        //원하는 곳에 배치 후 constraint 조건 수정 필요
-        myView.snp.makeConstraints {
-            $0.edges.equalTo(view.safeAreaLayoutGuide)
+        categoryView.snp.makeConstraints {
+            $0.top.equalTo(homeView.firstView.snp.top)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(52)
         }
         
-        //테스트 버튼 추가
-        view.addSubview(categoryButton)
-        
-        // 메뉴 업데이트 기능 구현을 위한 버튼
-        categoryButton.snp.makeConstraints { make in
-            make.width.equalTo(100)
-            make.height.equalTo(50)
-            make.leading.equalToSuperview().offset(30)
-            make.bottom.equalToSuperview()
+        myView.snp.makeConstraints {
+            $0.top.equalTo(homeView.secondView.snp.top).offset(20)
+            $0.leading.equalTo(homeView.secondView.snp.leading)
+            $0.trailing.equalTo(homeView.secondView.snp.trailing)
+            $0.height.equalTo(1230)
+        }
+    }
+    
+    func categoryView(_ view: CategoryView, didSelectCategory isToBrew: Bool) {
+        switch isToBrew {
+        case true:
+            currentMenu = menus.filter({$0.category == .toBrew})
+            myView.setData(menuData: currentMenu)
+        case false:
+            currentMenu = menus.filter({$0.category == .notToBrew})
+            myView.setData(menuData: currentMenu)
         }
     }
     
@@ -99,16 +82,5 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
     func cellTapped(_ index: IndexPath) {
         print(index[1])
     }
-    
-    //아래 버튼 동작 카테고리 메뉴 UISegmentedControl과 연동 필요
-    @objc func categoryButtonClicked() {
-        if isToBrew == true {
-            currentMenu = menus.filter({$0.category == .notToBrew})
-            isToBrew = false
-        } else if isToBrew == false {
-            currentMenu = menus.filter({$0.category == .toBrew})
-            isToBrew = true
-        }
-        myView.setData(menuData: currentMenu)
-    }
+
 }

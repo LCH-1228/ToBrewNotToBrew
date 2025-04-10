@@ -11,8 +11,8 @@ class HomeView: UIView {
     let paymentAmountLabel = UILabel()
     let orderButton = UIButton()
     
-    private let firstView = UIView()
-    private let secondView = UIView()
+    let firstView = UIView()
+    let secondView = UIView()
     private let thirdView = UIView()
     
     // 뷰를 코드로 만들 때 호출되는 초기화 함수
@@ -39,14 +39,14 @@ class HomeView: UIView {
         [firstView, secondView, thirdView]
             .forEach { stackView.addArrangedSubview($0) }
         
-        headerLogoImage.image = UIImage(named: "headerLogo")
+        headerLogoImage.image = UIImage(named: "test")
         headerLogoImage.contentMode = .scaleAspectFit
         
         stackView.axis = .vertical
         stackView.alignment = .fill
         
-        firstView.backgroundColor = .red
-        secondView.backgroundColor = .green
+        firstView.backgroundColor = .white
+        secondView.backgroundColor = .white
         thirdView.backgroundColor = .blue
         
         saparator.backgroundColor = .lightGray
@@ -83,14 +83,15 @@ class HomeView: UIView {
         }
         
         firstView.snp.makeConstraints {
-            $0.height.equalTo(300)
+            $0.height.equalTo(52)
         }
         
         secondView.snp.makeConstraints {
-            $0.height.equalTo(300)
+            $0.height.equalTo(1250)
         }
         
         thirdView.snp.makeConstraints {
+            $0.top.equalTo(secondView.snp.bottom)
             $0.height.equalTo(300)
         }
         
