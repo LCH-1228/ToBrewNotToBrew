@@ -19,24 +19,6 @@ class MenuCollectionView: UIView {
     
     var menus = [Menu]()
     
-    let titleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "메뉴"
-        label.textAlignment = .center
-        label.textColor = .black
-        label.font = .boldSystemFont(ofSize: 18)
-        return label
-    }()
-    
-    let countLabel: UILabel = {
-        let label = UILabel()
-        label.text = "총 0개"
-        label.textAlignment = .center
-        label.textColor = .black
-        label.font = .systemFont(ofSize: 16)
-        return label
-    }()
-    
     let menuCollectionView: UICollectionView = {
         let size = UIScreen.main.bounds
         let layout = UICollectionViewFlowLayout()
@@ -44,13 +26,14 @@ class MenuCollectionView: UIView {
         layout.minimumLineSpacing = 12
         layout.minimumInteritemSpacing = 12
         layout.itemSize = .init(width: (size.width - 52) / 2, height: (size.width / 2) * 1.45)
-        layout.sectionInset = UIEdgeInsets(top:0, left: 20, bottom: 0, right: 20)
+        layout.sectionInset = UIEdgeInsets(top:20, left: 20, bottom: 0, right: 20)
         
-        layout.headerReferenceSize = CGSize(width: 0, height: 0)
+        layout.headerReferenceSize = CGSize(width: size.width, height: 20)
         layout.footerReferenceSize = CGSize(width: 0, height: 0)
         
         layout.sectionHeadersPinToVisibleBounds = false
         layout.sectionFootersPinToVisibleBounds = false
+        
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .white
@@ -65,6 +48,9 @@ class MenuCollectionView: UIView {
         
         menuCollectionView.delegate = self
         menuCollectionView.dataSource = self
+        menuCollectionView.register(MenuCollectionViewHeaderView.self,
+                    forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+                        withReuseIdentifier: "header")
         
         menuCollectionView.register(MenuCollectionViewCell.self, forCellWithReuseIdentifier: "menuCell")
         
@@ -86,35 +72,17 @@ class MenuCollectionView: UIView {
 private extension MenuCollectionView {
     
     func configUI() {
-        self.backgroundColor = .white
         addOnSubview()
         setConstraints()
     }
     
     func addOnSubview() {
-        self.addSubview(titleLabel)
-        self.addSubview(countLabel)
         self.addSubview(menuCollectionView)
     }
     
     func setConstraints() {
-        titleLabel.snp.makeConstraints {
-            $0.height.equalTo(18)
-            $0.leading.equalTo(self.snp.leading).offset(20)
-            $0.top.equalTo(self.snp.top)
-        }
-        
-        countLabel.snp.makeConstraints {
-            $0.height.equalTo(16)
-            $0.centerY.equalTo(titleLabel.snp.centerY)
-            $0.trailing.equalTo(self.snp.trailing).offset(-20)
-        }
-        
         menuCollectionView.snp.makeConstraints {
-            $0.leading.equalTo(self.snp.leading)
-            $0.trailing.equalTo(self.snp.trailing)
-            $0.top.equalTo(titleLabel.snp.bottom).offset(0)
-            $0.bottom.equalTo(self.snp.bottom).offset(0)
+            $0.edges.equalToSuperview()
         }
     }
 }
@@ -145,11 +113,15 @@ extension MenuCollectionView: UICollectionViewDelegate, UICollectionViewDataSour
         let config = UIImage.SymbolConfiguration(weight: .heavy)
         cell.button.setImage(UIImage(systemName: "minus", withConfiguration: config), for: .normal)
     }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as? MenuCollectionViewHeaderView else { return UICollectionReusableView() }
+            return headerView
+    }
 }
 
 class MenuCollectionViewCell: UICollectionViewCell {
-    
-    weak var cellViewDelegate: MenuCollectionView?
     
     let imageFream: UIView = {
         let imageFrame = UIView()
@@ -168,7 +140,7 @@ class MenuCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.textAlignment = .left
         label.textColor = .black
-        label.font = .systemFont(ofSize: 16)
+        label.font = UIFont(name: "NotoSansKR-Regular", size: 16)
         label.backgroundColor = .clear
         
         return label
@@ -178,7 +150,7 @@ class MenuCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.textAlignment = .left
         label.textColor = .black
-        label.font = .boldSystemFont(ofSize: 18)
+        label.font = UIFont(name: "NotoSansKR-Medium", size: 18)
         label.backgroundColor = .clear
         
         return label
@@ -215,7 +187,7 @@ private extension MenuCollectionViewCell {
         contentView.backgroundColor = .white
         contentView.layer.cornerRadius = 15
         contentView.layer.borderWidth = 1
-        contentView.layer.borderColor = CGColor(red: 232, green: 232, blue: 232, alpha: 1)
+        contentView.layer.borderColor = CGColor(red: 0.9098, green: 0.9098, blue: 0.9098, alpha: 1)
         
         contentView.addSubview(imageFream)
         imageFream.addSubview(menuImage)
@@ -260,6 +232,45 @@ private extension MenuCollectionViewCell {
             $0.size.equalTo(24)
             $0.trailing.equalTo(imageFream.snp.trailing).offset(-8)
             $0.bottom.equalTo(imageFream.snp.bottom).offset(-8)
+        }
+    }
+}
+
+
+class MenuCollectionViewHeaderView: UICollectionReusableView {
+        
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "메뉴"
+        label.textAlignment = .center
+        label.textColor = .black
+        label.font = UIFont(name: "NotoSansKR-Bold", size: 18)
+        return label
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        configUI()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
+    func configUI() {
+        addOnSubview()
+        makeConstrainst()
+    }
+    
+    func addOnSubview() {
+        self.addSubview(titleLabel)
+    }
+    
+    func makeConstrainst() {
+        titleLabel.snp.makeConstraints {
+            $0.height.equalTo(18)
+            $0.leading.equalToSuperview().offset(20)
+            $0.top.equalToSuperview()
         }
     }
 }

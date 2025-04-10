@@ -3,8 +3,6 @@ import SnapKit
    
 class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionViewDelegate, MenuSelectionDelegate {
     
-    
-    
     // 각 뷰 생성
     let orderTableView = TableView()
     let homeView = HomeView()
@@ -67,7 +65,7 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
         myView.delegate = self
         
         categoryView.snp.makeConstraints {
-            $0.top.equalTo(homeView.firstView.snp.top)
+            $0.top.equalTo(homeView.firstView.snp.top).offset(4)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(52)
         }
@@ -76,7 +74,7 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
             $0.top.equalTo(homeView.secondView.snp.top).offset(20)
             $0.leading.equalTo(homeView.secondView.snp.leading)
             $0.trailing.equalTo(homeView.secondView.snp.trailing)
-            $0.height.equalTo(1230)
+            $0.height.equalTo(1280)
         }
         
         homeView.onOrderButtonTapped = { [weak self] in

@@ -110,7 +110,7 @@ class CategoryView: UIView {
     private func updateButtonUI(button: UIButton, isSelected: Bool) {
         button.backgroundColor = isSelected ? UI.selectedColor : UI.unselectedColor
         button.setTitleColor(isSelected ? UI.selectedTextColor : UI.unselectedTextColor, for: .normal)
-        button.titleLabel?.font = isSelected ? .boldSystemFont(ofSize: 18) : .systemFont(ofSize: 14)
+        button.titleLabel?.font = isSelected ? UIFont(name: "NotoSansKR-Medium", size: 18) : UIFont(name: "NotoSansKR-Medium", size: 14)
         button.layer.shadowOpacity = isSelected ? 0.1 : 0
         button.layer.shadowColor = UIColor.black.cgColor
         button.layer.shadowOffset = CGSize(width: 0, height: 2)
