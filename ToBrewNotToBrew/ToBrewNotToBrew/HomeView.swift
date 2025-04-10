@@ -58,7 +58,7 @@ class HomeView: UIView {
         paymentAmountLabel.textColor = .black
         paymentAmountLabel.font = UIFont(name: "NotoSansKR-Bold", size: 20)
         
-        let paymentAmount = 120
+        let paymentAmount = 0
         paymentAmountLabel.text = "\(paymentAmount) 원"
         
         // paymentAmount가 0보다 클 때 버튼 활성화

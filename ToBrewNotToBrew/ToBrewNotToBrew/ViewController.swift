@@ -3,25 +3,17 @@ import SnapKit
    
 class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionViewDelegate, MenuSelectionDelegate {
     
-    // 비어있는 아이템 배열 생성
-    var orderItem: [OrderItem] = []
     
-    // 메뉴가 선택될 때 실행되는 메서드
-    func didSelectMenuItem(_ item: OrderItem) {
-        if let index = orderItem.firstIndex(where: { $0.name == item.name}) {
-            orderItem[index].quantity += 1
-        } else {
-            orderItem.append(item)
-        }
-        orderTableView.updateOrders(orderItem)
-        
-    }
     
     // 각 뷰 생성
     let orderTableView = TableView()
     let homeView = HomeView()
     let categoryView = CategoryView()
     let myView = MenuCollectionView()
+    
+    // 비어있는 아이템 배열 생성
+    var orderItem: [OrderItem] = []
+    var selectedMenu: [String : Int] = [ : ]
         
     let menus: [Menu] = [
         Menu(name: "Americano", price: 4300, image: "americano", quantity: 1, category: .toBrew),
@@ -49,7 +41,6 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
 
         print("뷰컨 로딩 완료")
         
@@ -114,26 +105,38 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
     
     //어떤 cell이 클릭되었는지 출력 장바구니 UITable뷰와 연동 필요
     func cellTapped(_ name: String) {
-        if let menu = menus.first(where: {$0.name == name}) {
-            let item = OrderItem(name: menu.name,
-                                 price: menu.price,
-                                 imageName: menu.image,
-                                 quantity: 1,
-                                 category: menu.category)
-            didSelectMenuItem(item)
-        }
+        let currentselected = menus.filter({$0.name == name})[0]
+                
+        let item = OrderItem(name: currentselected.name,
+                             price: currentselected.price,
+                             imageName: currentselected.image,
+                             quantity: 1,
+                             category: currentselected.category)
+        didSelectMenuItem(item)
     }
     
-    private func setupUI() {
-        view.backgroundColor = .white
-//        view.addSubview(orderTableView)
-//        
-//        orderTableView.snp.makeConstraints {
-//            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
-//            $0.leading.equalToSuperview().offset(20)
-//            $0.trailing.equalToSuperview().offset(-20)
-//            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
-//        }
+    // 메뉴가 선택될 때 실행되는 메서드
+    func didSelectMenuItem(_ item: OrderItem) {
+        
+        var totalPrice:Int = 0
+        
+        let currentQuantity = selectedMenu[item.name] ?? 0
+        selectedMenu.updateValue(currentQuantity + 1, forKey: item.name)
+        
+        for ammount in selectedMenu {
+            let price = menus.filter({$0.name == ammount.key})[0].price
+            let quantity = selectedMenu[ammount.key] ?? 0
+            totalPrice += price * quantity
+        }
+        
+        if let index = orderItem.firstIndex(where: { $0.name == item.name}) {
+            orderItem[index].quantity += 1
+        } else {
+            orderItem.append(item)
+        }
+        
+        orderTableView.updateOrders(orderItem)
+        homeView.paymentAmountLabel.text = "\(totalPrice)"
+        
     }
-
 }
