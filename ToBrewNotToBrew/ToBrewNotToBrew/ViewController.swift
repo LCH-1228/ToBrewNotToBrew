@@ -79,8 +79,8 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
     }
     
     //어떤 cell이 클릭되었는지 출력 장바구니 UITable뷰와 연동 필요
-    func cellTapped(_ index: IndexPath) {
-        print(index[1])
+    func cellTapped(_ name: String) {
+        print(menus.filter({$0.name == name})[0])
     }
 
 }

@@ -8,7 +8,7 @@ import UIKit
 import SnapKit
 
 protocol MenuCollectionViewDelegate: AnyObject {
-    func cellTapped(_ index: IndexPath)
+    func cellTapped(_ name: String)
 }
 
 class MenuCollectionView: UIView {
@@ -138,19 +138,13 @@ extension MenuCollectionView: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        delegate?.cellTapped(indexPath)
-        
         guard let cell = collectionView.cellForItem(at: indexPath) as? MenuCollectionViewCell else { return }
+        
+        delegate?.cellTapped(cell.nameLabel.text ?? "실패")
         
         let config = UIImage.SymbolConfiguration(weight: .heavy)
         cell.button.setImage(UIImage(systemName: "minus", withConfiguration: config), for: .normal)
     }
-}
-
-
-protocol MenuCollectionViewCellDelegate: AnyObject {
-    func cellTapped(_ cell: MenuCollectionViewCell)
 }
 
 class MenuCollectionViewCell: UICollectionViewCell {
