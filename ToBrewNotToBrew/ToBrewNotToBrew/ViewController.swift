@@ -83,14 +83,20 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
             $0.trailing.equalTo(homeView.secondView.snp.trailing)
             $0.height.equalTo(1230)
         }
+        
+        homeView.onOrderButtonTapped = { [weak self] in
+            guard let self = self else { return }
+            
+            let alert = UIAlertController(title: "주문하기", message: "주문을 진행하시겠습니까?", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "확인", style: .default))
+            alert.addAction(UIAlertAction(title: "취소", style: .cancel))
+            
+            self.present(alert, animated: true)
+        }
+        
         orderTableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
-        }//         더미 데이터
-//        let testItem = OrderItem(name: "Latte", price: 3000, imageName: "latte", quantity: 1, category: .toBrew)
-//        let testItem2 = OrderItem(name: "Latte", price: 3000, imageName: "latte", quantity: 1, category: .toBrew)
-//        let testItem3 = OrderItem(name: "Latte", price: 3000, imageName: "latte", quantity: 1, category: .toBrew)
-
-        
+        }
 //         더미 데이터를 받아와서 updateOrders 메서드 실행
         orderTableView.updateOrders(orderItem)
     }
