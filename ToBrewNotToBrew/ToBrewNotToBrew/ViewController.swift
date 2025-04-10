@@ -7,6 +7,7 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
     let homeView = HomeView()
     let categoryView = CategoryView()
     let myView = MenuCollectionView()
+    var selectedMenu: [String : Int] = [ : ]
         
     let menus: [Menu] = [
         Menu(name: "Americano", price: 4300, image: "americano", category: .toBrew),
@@ -80,7 +81,25 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
     
     //어떤 cell이 클릭되었는지 출력 장바구니 UITable뷰와 연동 필요
     func cellTapped(_ name: String) {
-        print(menus.filter({$0.name == name})[0])
+        let currentselected = menus.filter({$0.name == name})[0]
+
+        updateTotalPrice(item: currentselected)
+    }
+    
+    func updateTotalPrice(item: Menu) {
+        var totalPrice:Int = 0
+        
+        let currentQuantity = selectedMenu[item.name] ?? 0
+        selectedMenu.updateValue(currentQuantity + 1, forKey: item.name)
+        
+        for ammount in selectedMenu {
+            let price = menus.filter({$0.name == ammount.key})[0].price
+            let quantity = selectedMenu[ammount.key] ?? 0
+            print(ammount.key, price, quantity)
+            totalPrice += price * quantity
+        }
+        
+        homeView.paymentAmountLabel.text = "\(totalPrice)"
     }
 
 }
