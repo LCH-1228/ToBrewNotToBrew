@@ -94,6 +94,16 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
         }
 //         더미 데이터를 받아와서 updateOrders 메서드 실행
         orderTableView.updateOrders(orderItem)
+        
+        
+        orderTableView.TrashTapped = { [weak self] in
+            guard let self = self else { return }
+            
+            self.orderItem.removeAll() //장바구니 비우기
+            self.selectedMenu.removeAll() // 메뉴 수량 딕셔너리 초기화
+            self.orderTableView.updateOrders([]) // 장바구니 갱신(명시적으로 빈 배열을 전달시킴)
+            self.homeView.paymentAmount = 0 //금액 0원 처리
+        }
     }
     
     func categoryView(_ view: CategoryView, didSelectCategory isToBrew: Bool) {

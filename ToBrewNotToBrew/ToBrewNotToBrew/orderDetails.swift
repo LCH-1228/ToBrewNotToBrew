@@ -12,6 +12,11 @@ import SnapKit
 class TableView: UIView {
     
     let shoppingCart = UILabel() // 장바구니 레이블
+    let totalCountLabel = UILabel()
+    let tableView = UITableView()
+    
+    var TrashTapped: (() -> Void)? //viewcontroller로 이벤트 전달을 위한 클로저
+    // tableviewheader -> tablevoew -> viewcontroller 로 이벤트를 전달하기 위한 중간다리 역할을 함
     
     var totalCount: Int = 0 {
         didSet {
@@ -45,8 +50,6 @@ class TableView: UIView {
         }
     }
 
-
-    let tableView = UITableView()
     // didSet을 통해서 값을 갱신해줌.
     var orderItems: [OrderItem] = [] {
         didSet {
@@ -128,7 +131,8 @@ extension TableView: UITableViewDelegate, UITableViewDataSource {
         guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "headerView") as? TableViewHeader else { return UIView() }
         
         headerView.tapped = { [weak self] in
-            self?.orderItems.removeAll()
+            self?.TrashTapped?()
+            //tableviewheader에 정의된 tapped클로저에 tableview가 가지고 있는 trashtapped 클로저를 연결
         }
         
         return headerView
@@ -277,6 +281,11 @@ class OrderItemCell: UITableViewCell {
 class TableViewHeader: UITableViewHeaderFooterView {
     
     var tapped: (() -> Void)?
+    // viewcontroller에게 전달할 클로저(버튼을 눌렀을 때 수행할 동작을 viewcontroller에서 정의할 수 있게 함
+    
+    @objc func trashButtonTapped() { //버튼 클릭시 실행되는 함수
+        tapped?() // viewcontroller로 이벤트 전달 + viewcontroller가 정의해둔 tapped 클로저 실행
+    }
     
     let button: UIButton = {
         let button = UIButton()
@@ -302,9 +311,5 @@ class TableViewHeader: UITableViewHeaderFooterView {
         }
         
         button.addTarget(self, action: #selector(trashButtonTapped), for: .touchUpInside)
-    }
-    
-    @objc func trashButtonTapped() {
-        tapped?()
     }
 }
