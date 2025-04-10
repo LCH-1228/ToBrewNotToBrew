@@ -75,18 +75,18 @@ ViewController
 
 # 프로젝트 파일 구조
 ```
-📦 ToBrewNotToBrew
- ┣ 📂 View
- ┃ ┣ 📜 CategoryView.swift
- ┃ ┣ 📜 HomeView.swift
- ┃ ┣ 📜 MenuCollectionView.swift
- ┃ ┗ 📜 orderDetails.swift
- ┣ 📂 Model
- ┃ ┗ 📜 model.swift
- ┣ 📂 Controller
- ┃ ┣ 📜 ViewController.swift
- ┃ ┗ 📜 SplashViewController.swift
- ┣ 📜 Protocol.swift
+ ToBrewNotToBrew
+ ┣  View
+ ┃ ┣  CategoryView.swift
+ ┃ ┣  HomeView.swift
+ ┃ ┣  MenuCollectionView.swift
+ ┃ ┗  orderDetails.swift
+ ┣  Model
+ ┃ ┗  model.swift
+ ┣  Controller
+ ┃ ┣  ViewController.swift
+ ┃ ┗  SplashViewController.swift
+ ┣  Protocol.swift
 ```
 
 
