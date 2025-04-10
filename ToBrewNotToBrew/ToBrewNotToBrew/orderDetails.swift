@@ -56,9 +56,8 @@ class TableView: UIView {
         tableView.register(OrderItemCell.self, forCellReuseIdentifier: "OrderItemCell")
         // 테이블 뷰제약 조건
         tableView.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview()
-            $0.top.equalTo(shoppingCart.snp.top).offset(20)
-            $0.bottom.equalToSuperview()
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.top.equalTo(shoppingCart.snp.bottom).offset(20)
         }
         
     }
