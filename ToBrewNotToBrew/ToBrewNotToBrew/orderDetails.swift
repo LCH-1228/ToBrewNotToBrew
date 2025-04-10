@@ -13,7 +13,28 @@ class TableView: UIView {
     
     let shoppingCart = UILabel() // 장바구니 레이블
     let trashCan = UIImageView()
+    let totalCountLabel = UILabel()
     
+    var totalCount: Int = 0 {
+        didSet {
+            totalCountLabel.text = "총 \(totalCount) 개"
+        }
+    }
+    func updateTotalCount() {
+        let total = orderItems.reduce(0) { $0 + $1.quantity}
+        totalCount = total
+    }
+    func totalCountUI() {
+        addSubview(totalCountLabel)
+//        totalCountLabel.text = "총 \(totalCount) 개"
+        totalCountLabel.font = UIFont(name: "NotoSansKR-Regular", size: 18)
+        
+        totalCountLabel.snp.makeConstraints {
+            $0.trailing.equalToSuperview().inset(20)
+            $0.top.equalToSuperview()
+
+        }
+    }
     private func shoppingCartUI() {
         addSubview(shoppingCart)
         // 장바구니 UI 설정
@@ -38,6 +59,8 @@ class TableView: UIView {
     var orderItems: [OrderItem] = [] {
         didSet {
             tableView.reloadData()
+            updateTotalCount()
+
         }
     }
     // orderItem 프로퍼티에 [OrderItem] 집어 넣는 메서드
@@ -51,12 +74,14 @@ class TableView: UIView {
         setupTableView()
         trashCanUI()
         tableView.isScrollEnabled = false
+        totalCountUI()
     }
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         shoppingCartUI()
         setupTableView()
         trashCanUI()
+        totalCountUI()
     }
     
     private func setupTableView() {
