@@ -18,7 +18,7 @@ class TableView: UIView {
         addSubview(shoppingCart)
         // 장바구니 UI 설정
         shoppingCart.text = "장바구니"
-        shoppingCart.font = .systemFont(ofSize: 18)
+        shoppingCart.font = UIFont(name: "NotoSansKR-Regular", size: 18)
         
         shoppingCart.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(20)
@@ -166,7 +166,7 @@ extension TableView: UITableViewDelegate, UITableViewDataSource {
             
             // 커피 이름 레이블 UI 설정
             nameLabel.text = "Latte"
-            nameLabel.font = .systemFont(ofSize: 16)
+            nameLabel.font = UIFont(name: "NotoSansKR-Regular", size: 16)
             
             nameLabel.snp.makeConstraints {
                 $0.leading.equalTo(coffeeImageView.snp.trailing).offset(12)
@@ -175,7 +175,7 @@ extension TableView: UITableViewDelegate, UITableViewDataSource {
             
             // 커피 가격 레이블 UI 설정
             priceLabel.text = "4,000원"
-            priceLabel.font = .boldSystemFont(ofSize: 18)
+            priceLabel.font = UIFont(name: "NotoSansKR-Bold", size: 18)
             
             priceLabel.snp.makeConstraints {
                 $0.leading.equalTo(coffeeImageView.snp.trailing).offset(12)
@@ -208,7 +208,7 @@ extension TableView: UITableViewDelegate, UITableViewDataSource {
             
             // 수량 레이블 UI 설정
             quantityLabel.text = "0"
-            quantityLabel.font = .systemFont(ofSize: 16)
+            quantityLabel.font = UIFont(name: "NotoSansKR-Regular", size: 16)
             
             quantityLabel.snp.makeConstraints {
                 $0.leading.equalTo(minueButton.snp.trailing).offset(16)
@@ -220,6 +220,7 @@ extension TableView: UITableViewDelegate, UITableViewDataSource {
         
         func basicConfigure() {
             statusLabel.text = "장바구니가 비어있습니다."
+            statusLabel.font = UIFont(name: "NotoSansKR-Regular", size: 16)
             cartImageView.image = UIImage(named: "shoppingCart")
             // 기본 뷰만 보이게
             [statusLabel, cartImageView].forEach { $0.isHidden = false }

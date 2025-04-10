@@ -55,7 +55,7 @@ class HomeView: UIView {
         
         paymentTitleLabel.text = "결제예정금액"
         paymentTitleLabel.textColor = .black
-        paymentTitleLabel.font = UIFont(name: "NotoSansKR-Bold", size: 16)
+        paymentTitleLabel.font = UIFont(name: "NotoSansKR-Regular", size: 16)
         paymentAmountLabel.textColor = .black
         paymentAmountLabel.font = UIFont(name: "NotoSansKR-Bold", size: 20)
         
@@ -67,7 +67,7 @@ class HomeView: UIView {
         // paymentAmount가 0보다 클 때 불투명, 크지 않다면 반투명
         orderButton.alpha = paymentAmount > 0 ? 1.0 : 0.5
         
-        orderButton.backgroundColor = .button
+        orderButton.backgroundColor = .burgundyButton
         orderButton.setTitle("주문하기", for: .normal)
         orderButton.titleLabel?.font = UIFont(name: "NotoSansKR-Regular", size: 16)
         orderButton.setTitleColor(.white, for: .normal)
@@ -98,11 +98,11 @@ class HomeView: UIView {
         }
         
         firstView.snp.makeConstraints {
-            $0.height.equalTo(52)
+            $0.height.equalTo(60)
         }
         
         secondView.snp.makeConstraints {
-            $0.height.equalTo(1250)
+            $0.height.equalTo(1280)
         }
         
         thirdView.snp.makeConstraints {
