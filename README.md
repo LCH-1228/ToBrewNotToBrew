@@ -94,6 +94,6 @@ ViewController
 | 문제 상황 | 해결 방법 | 비고 |
 |----------|-----------|------|
 | CategoryView 버튼 그림자 짤림 | ViewController에서 CategoryViewdml top offset을 4로 설정하고,<br> HomeView에서 firstView height를 60으로 설정하여 버튼 위아래의 그림자 공간 확보 | 레이아웃 관련 문제 |
-|  |  |  |
+| 주문하기 버튼 작동 버그 | 주문하기 버튼이 결제예정금액이 0일 때는 비활성화, 0이 아닐 때는 비활성화 되어야하는데 동작이 되지 않았음. didset을 이용하여 결제예정금액에 따라 버튼 활성화 여부가 바뀌도록 개선 | UI 상태 동기화 문제 |
 |  |  |  |
 |  |  |  |
