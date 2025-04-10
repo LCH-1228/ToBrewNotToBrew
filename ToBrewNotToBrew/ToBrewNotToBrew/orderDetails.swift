@@ -11,6 +11,19 @@ import SnapKit
 
 class TableView: UIView {
     
+    let shoppingCart = UILabel() // 장바구니 레이블
+    private func shoppingCartUI() {
+        addSubview(shoppingCart)
+        // 장바구니 UI 설정
+        shoppingCart.text = "장바구니"
+        shoppingCart.font = .systemFont(ofSize: 18)
+        
+        shoppingCart.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(20)
+            $0.top.equalToSuperview()
+        }
+    }
+
     let tableView = UITableView()
     // didSet을 통해서 값을 갱신해줌.
     var orderItems: [OrderItem] = [] {
@@ -25,10 +38,12 @@ class TableView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        shoppingCartUI()
         setupTableView()
     }
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+        shoppingCartUI()
         setupTableView()
     }
     
@@ -42,7 +57,8 @@ class TableView: UIView {
         // 테이블 뷰제약 조건
         tableView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
-            $0.top.bottom.equalToSuperview()
+            $0.top.equalTo(shoppingCart.snp.top).offset(20)
+            $0.bottom.equalToSuperview()
         }
         
     }
@@ -105,6 +121,7 @@ extension TableView: UITableViewDelegate, UITableViewDataSource {
                 contentView.addSubview($0)
                 $0.isHidden = true // 처음엔 안보이게
             }
+            
             
             // 카트 이미지 UI 설정
             cartImageView.contentMode = .scaleAspectFit
