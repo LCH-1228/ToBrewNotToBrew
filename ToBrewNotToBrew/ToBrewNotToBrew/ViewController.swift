@@ -65,7 +65,7 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
         myView.delegate = self
         
         categoryView.snp.makeConstraints {
-            $0.top.equalTo(homeView.firstView.snp.top).offset(2)
+            $0.top.equalTo(homeView.firstView.snp.top).offset(4)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(52)
         }
