@@ -179,7 +179,7 @@ extension TableView: UITableViewDelegate, UITableViewDataSource {
             minueButton.snp.makeConstraints {
                 $0.size.equalTo(30)
                 $0.centerY.equalTo(coffeeImageView.snp.centerY)
-                $0.leading.equalTo(nameLabel.snp.trailing).offset(50)
+                $0.trailing.equalToSuperview().offset(-100)
             }
             
             // 플러스 버튼 UI 설정
