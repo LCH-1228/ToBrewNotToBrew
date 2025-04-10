@@ -1,4 +1,4 @@
-# To Brew, Not To Brew
+# To Brew Not To Brew
 
 # 목차
 1. [프로젝트 소개](#프로젝트-소개)
@@ -71,6 +71,7 @@ ViewController
 
 # 와이어프레임
 
+![image](https://github.com/user-attachments/assets/a44c81ea-ae5e-4607-805d-5cf8eaaf930b)
 
 
 # 프로젝트 파일 구조
