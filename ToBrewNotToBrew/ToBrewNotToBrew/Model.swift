@@ -7,16 +7,13 @@
 import UIKit
 import SnapKit
 
-struct Drink {
+struct Menu {
     let name: String
     let price: Int
-    let imageName: String
-    var quantity: Int
-}
-
-struct EmptyCart {
     let image: String
-    let status: String
+    var quantity: Int
+    let category: Category
+    
 }
 
 struct OrderItem {
@@ -24,7 +21,14 @@ struct OrderItem {
     let price: Int
     let imageName: String
     var quantity: Int
+    let category: Category
+    
 }
+enum Category {
+    case toBrew
+    case notToBrew
+}
+
 
 //struct Menu {
 //    var menuArr: [Drink] = []
