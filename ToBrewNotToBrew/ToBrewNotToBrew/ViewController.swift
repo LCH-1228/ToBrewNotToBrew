@@ -1,6 +1,19 @@
 import UIKit
 import SnapKit
 
+class ViewController: UIViewController, MenuSelectionDelegate {
+    // 비어있는 아이템 배열 생성
+    var orderItem: [OrderItem] = []
+    
+    // 메뉴가 선택될 때 실행되는 메서드
+    func didSelectMenuItem(_ item: OrderItem) {
+//        orderItem.append(item)
+        orderTableView.updateOrders(orderItem)
+        
+    }
+    
+    // 테이블 뷰 생성
+    let orderTableView = TableView()
 class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionViewDelegate {
 
 
@@ -65,6 +78,16 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
             $0.trailing.equalTo(homeView.secondView.snp.trailing)
             $0.height.equalTo(1230)
         }
+        setupUI()
+        
+//         더미 데이터
+        let testItem = OrderItem(name: "Latte", price: 3000, imageName: "latte", quantity: 1)
+        let testItem2 = OrderItem(name: "Latte", price: 3000, imageName: "latte", quantity: 1)
+        let testItem3 = OrderItem(name: "Latte", price: 3000, imageName: "latte", quantity: 1)
+
+        
+//         더미 데이터를 받아와서 updateOrders 메서드 실행
+        orderTableView.updateOrders([testItem, testItem2, testItem3])
     }
     
     func categoryView(_ view: CategoryView, didSelectCategory isToBrew: Bool) {
@@ -81,6 +104,18 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
     //어떤 cell이 클릭되었는지 출력 장바구니 UITable뷰와 연동 필요
     func cellTapped(_ name: String) {
         print(menus.filter({$0.name == name})[0])
+    }
+    
+    private func setupUI() {
+        view.backgroundColor = .white
+        view.addSubview(orderTableView)
+        
+        orderTableView.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+        }
     }
 
 }
