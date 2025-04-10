@@ -101,22 +101,21 @@ class CategoryView: UIView {
         if isToBrewSelected {
             toBrewButton.backgroundColor = selectedColor
             toBrewButton.setTitleColor(selectedTextColor, for: .normal)
-            toBrewButton.titleLabel?.font = .boldSystemFont(ofSize: 18)
+            toBrewButton.titleLabel?.font = UIFont(name: "NotoSansKR-Medium", size: 18)
 
             notToBrewButton.backgroundColor = unselectedColor
             notToBrewButton.setTitleColor(unselectedTextColor, for: .normal)
-            notToBrewButton.titleLabel?.font = .systemFont(ofSize: 14)
-
+            notToBrewButton.titleLabel?.font = UIFont(name: "NotoSansKR-Medium", size: 14)
             applyShadow(to: toBrewButton)
             removeShadow(from: notToBrewButton)
         } else {
             notToBrewButton.backgroundColor = selectedColor
             notToBrewButton.setTitleColor(selectedTextColor, for: .normal)
-            notToBrewButton.titleLabel?.font = .boldSystemFont(ofSize: 18)
+            notToBrewButton.titleLabel?.font = UIFont(name: "NotoSansKR-Medium", size: 18)
 
             toBrewButton.backgroundColor = unselectedColor
             toBrewButton.setTitleColor(unselectedTextColor, for: .normal)
-            toBrewButton.titleLabel?.font = .systemFont(ofSize: 14)
+            toBrewButton.titleLabel?.font = UIFont(name: "NotoSansKR-Medium", size: 14)
 
             applyShadow(to: notToBrewButton)
             removeShadow(from: toBrewButton)
