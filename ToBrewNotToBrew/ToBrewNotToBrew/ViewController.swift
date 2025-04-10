@@ -138,7 +138,8 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
         }
         
         orderTableView.updateOrders(orderItem)
-        homeView.paymentAmountLabel.text = "\(totalPrice)"
+        
+        homeView.paymentAmount = totalPrice
         
     }
 }

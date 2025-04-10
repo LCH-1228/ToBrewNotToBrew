@@ -16,6 +16,14 @@ class HomeView: UIView {
     let secondView = UIView()
     let thirdView = UIView()
     
+    var paymentAmount: Int = 0 {
+        didSet {
+            paymentAmountLabel.text = "\(paymentAmount) 원"
+            orderButton.isEnabled = paymentAmount > 0
+            orderButton.alpha = paymentAmount > 0 ? 1.0 : 0.5
+        }
+    }
+    
     // 뷰를 코드로 만들 때 호출되는 초기화 함수
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -58,14 +66,7 @@ class HomeView: UIView {
         paymentTitleLabel.font = UIFont(name: "NotoSansKR-Regular", size: 16)
         paymentAmountLabel.textColor = .black
         paymentAmountLabel.font = UIFont(name: "NotoSansKR-Bold", size: 20)
-        
-        let paymentAmount = 0
-        paymentAmountLabel.text = "\(paymentAmount) 원"
-        
-        // paymentAmount가 0보다 클 때 버튼 활성화
-        orderButton.isEnabled = paymentAmount > 0
-        // paymentAmount가 0보다 클 때 불투명, 크지 않다면 반투명
-        orderButton.alpha = paymentAmount > 0 ? 1.0 : 0.5
+        paymentAmount = 0
         
         orderButton.backgroundColor = .burgundyButton
         orderButton.setTitle("주문하기", for: .normal)
