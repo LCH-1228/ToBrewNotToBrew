@@ -51,6 +51,10 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
         homeView.secondView.addSubview(myView)
         homeView.thirdView.addSubview(orderTableView)
         
+        // thirdView의 크기가 한정되어 있어도, 테이블 뷰의 크기대로 들어감.
+        // 테이블 뷰의 크기대로 버팀.
+        homeView.thirdView.setContentCompressionResistancePriority(.required, for: .vertical)
+
         categoryView.delegate = self
         
         //주입할 데이터 필터링
