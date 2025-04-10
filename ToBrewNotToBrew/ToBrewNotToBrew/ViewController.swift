@@ -60,6 +60,10 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
         homeView.secondView.addSubview(myView)
         homeView.thirdView.addSubview(orderTableView)
         
+        // thirdView의 크기가 한정되어 있어도, 테이블 뷰의 크기대로 들어감.
+        // 테이블 뷰의 크기대로 버팀.
+        homeView.thirdView.setContentCompressionResistancePriority(.required, for: .vertical)
+
         categoryView.delegate = self
         
         //주입할 데이터 필터링
@@ -85,11 +89,7 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
         }
         orderTableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
-        }//         더미 데이터
-//        let testItem = OrderItem(name: "Latte", price: 3000, imageName: "latte", quantity: 1, category: .toBrew)
-//        let testItem2 = OrderItem(name: "Latte", price: 3000, imageName: "latte", quantity: 1, category: .toBrew)
-//        let testItem3 = OrderItem(name: "Latte", price: 3000, imageName: "latte", quantity: 1, category: .toBrew)
-
+        }
         
 //         더미 데이터를 받아와서 updateOrders 메서드 실행
         orderTableView.updateOrders(orderItem)

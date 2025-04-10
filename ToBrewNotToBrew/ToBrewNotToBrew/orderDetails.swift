@@ -12,6 +12,8 @@ import SnapKit
 class TableView: UIView {
     
     let shoppingCart = UILabel() // 장바구니 레이블
+    let trashCan = UIImageView()
+    
     private func shoppingCartUI() {
         addSubview(shoppingCart)
         // 장바구니 UI 설정
@@ -21,6 +23,13 @@ class TableView: UIView {
         shoppingCart.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(20)
             $0.top.equalToSuperview()
+        }
+    }
+    private func trashCanUI() {
+        addSubview(trashCan)
+        trashCan.image = UIImage(named: "Trash")
+        trashCan.snp.makeConstraints {
+            $0.leading.equalTo(shoppingCart.snp.trailing).offset(30)
         }
     }
 
@@ -40,11 +49,14 @@ class TableView: UIView {
         super.init(frame: frame)
         shoppingCartUI()
         setupTableView()
+        trashCanUI()
+        tableView.isScrollEnabled = false
     }
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         shoppingCartUI()
         setupTableView()
+        trashCanUI()
     }
     
     private func setupTableView() {
@@ -142,7 +154,7 @@ extension TableView: UITableViewDelegate, UITableViewDataSource {
             // 커피 이미지 UI 설정
             coffeeImageView.contentMode = .scaleAspectFit
             coffeeImageView.clipsToBounds = true
-            coffeeImageView.backgroundColor = .gray
+            coffeeImageView.backgroundColor = .white
             
             coffeeImageView.snp.makeConstraints {
                 $0.width.height.equalTo(64)
@@ -202,6 +214,7 @@ extension TableView: UITableViewDelegate, UITableViewDataSource {
                 $0.leading.equalTo(minueButton.snp.trailing).offset(16)
                 $0.centerY.equalTo(coffeeImageView.snp.centerY)
             }
+           
         }
         
         

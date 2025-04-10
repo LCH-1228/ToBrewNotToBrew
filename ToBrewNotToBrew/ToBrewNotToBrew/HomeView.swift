@@ -39,6 +39,7 @@ class HomeView: UIView {
         [firstView, secondView, thirdView]
             .forEach { stackView.addArrangedSubview($0) }
         
+        
         headerLogoImage.image = UIImage(named: "test")
         headerLogoImage.contentMode = .scaleAspectFit
         
