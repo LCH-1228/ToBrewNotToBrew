@@ -237,6 +237,7 @@ private extension MenuCollectionViewCell {
         
         //메뉴 이름 제약 설정
         nameLabel.snp.makeConstraints {
+            $0.height.equalTo(16)
             $0.leading.equalTo(contentView.snp.leading).offset(16)
             $0.trailing.equalTo(contentView.snp.trailing).offset(-16)
             $0.top.equalTo(imageFrame.snp.bottom).offset(20)
