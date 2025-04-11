@@ -132,10 +132,6 @@ extension MenuCollectionView: UICollectionViewDelegate, UICollectionViewDataSour
         
         // delegate를 이용하여 선택된 셀의 이름을 전달
         delegate?.cellTapped(cell.nameLabel.text ?? "실패")
-        
-        // 선택된 셀의 버튼 이미지를 "minus" 이미지로 변경
-        let config = UIImage.SymbolConfiguration(weight: .heavy)
-        cell.button.setImage(UIImage(systemName: "minus", withConfiguration: config), for: .normal)
     }
     
     /// 헤더 뷰를 컬렉션 뷰로 반환하는 메서드
@@ -185,17 +181,6 @@ class MenuCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    //메뉴 추가 상태를 나타내기 위한 버튼
-    let button: UIButton = {
-        let button = UIButton()
-        let config = UIImage.SymbolConfiguration(weight: .heavy)
-        button.setImage(UIImage(systemName: "plus", withConfiguration: config), for: .normal)
-        button.tintColor = .white
-        button.backgroundColor = .mochaBrownAddbutton
-        button.layer.cornerRadius = 12
-        return button
-    }()
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         configUI()
@@ -230,7 +215,6 @@ private extension MenuCollectionViewCell {
         //라밸과 버튼 추가
         contentView.addSubview(nameLabel)
         contentView.addSubview(priceLabel)
-        contentView.addSubview(button)
     }
     
     // 제약설정 메서드
@@ -249,12 +233,10 @@ private extension MenuCollectionViewCell {
             $0.trailing.equalTo(imageFrame.snp.trailing).offset(-12)
             $0.top.equalTo(imageFrame.snp.top).offset(12)
             $0.bottom.equalTo(imageFrame.snp.bottom).offset(-12)
-//            $0.center.equalTo(imageFrame.snp.center)
         }
         
         //메뉴 이름 제약 설정
         nameLabel.snp.makeConstraints {
-//            $0.height.equalTo(16)
             $0.leading.equalTo(contentView.snp.leading).offset(16)
             $0.trailing.equalTo(contentView.snp.trailing).offset(-16)
             $0.top.equalTo(imageFrame.snp.bottom).offset(20)
@@ -268,13 +250,6 @@ private extension MenuCollectionViewCell {
             $0.leading.equalTo(contentView.snp.leading).offset(16)
             $0.trailing.equalTo(contentView.snp.trailing).offset(-16)
             $0.bottom.equalTo(contentView.snp.bottom).offset(-20)
-        }
-        
-        // 버튼 제약 설정
-        button.snp.makeConstraints {
-            $0.size.equalTo(24)
-            $0.trailing.equalTo(imageFrame.snp.trailing).offset(-8)
-            $0.bottom.equalTo(imageFrame.snp.bottom).offset(-8)
         }
     }
 }
