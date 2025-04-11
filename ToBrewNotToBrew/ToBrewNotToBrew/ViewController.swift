@@ -56,11 +56,11 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
 
         categoryView.delegate = self
         
-        //주입할 데이터 필터링
+        //컬렉션뷰에 표시할 데이터 필터링
         currentMenu = menus.filter({$0.category == .toBrew})
         
-        //데이터 주입
-        myView.setData(menuData: currentMenu)
+        //컬렉션 뷰에 표시할 데이터 전달
+        myView.menus = currentMenu
         
         
         //collectionView에서 클릭된 cell 확인을 위한 delegate 지정
@@ -110,10 +110,10 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
         switch isToBrew {
         case true:
             currentMenu = menus.filter({$0.category == .toBrew})
-            myView.setData(menuData: currentMenu)
+            myView.menus = currentMenu
         case false:
             currentMenu = menus.filter({$0.category == .notToBrew})
-            myView.setData(menuData: currentMenu)
+            myView.menus = currentMenu
         }
     }
     
