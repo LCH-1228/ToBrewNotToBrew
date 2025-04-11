@@ -9,6 +9,7 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
     let categoryView = CategoryView()
     let myView = MenuCollectionView()
     
+    
     // 비어있는 아이템 배열 생성
     var orderItem: [OrderItem] = []
     var selectedMenu: [String : Int] = [ : ]
@@ -39,7 +40,7 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         print("뷰컨 로딩 완료")
         
         view.backgroundColor = .white
@@ -60,6 +61,7 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
         
         //데이터 주입
         myView.setData(menuData: currentMenu)
+        
         
         //collectionView에서 클릭된 cell 확인을 위한 delegate 지정
         myView.delegate = self
@@ -92,6 +94,16 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
         }
 //         더미 데이터를 받아와서 updateOrders 메서드 실행
         orderTableView.updateOrders(orderItem)
+        
+        
+        orderTableView.TrashTapped = { [weak self] in
+            guard let self = self else { return }
+            
+            self.orderItem.removeAll() //장바구니 비우기
+            self.selectedMenu.removeAll() // 메뉴 수량 딕셔너리 초기화
+            self.orderTableView.updateOrders([]) // 장바구니 갱신(명시적으로 빈 배열을 전달시킴)
+            self.homeView.paymentAmount = 0 //금액 0원 처리
+        }
     }
     
     func categoryView(_ view: CategoryView, didSelectCategory isToBrew: Bool) {
@@ -129,6 +141,8 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
             let price = menus.filter({$0.name == ammount.key})[0].price
             let quantity = selectedMenu[ammount.key] ?? 0
             totalPrice += price * quantity
+            
+            print(ammount.key, price, quantity)
         }
         
         if let index = orderItem.firstIndex(where: { $0.name == item.name}) {
