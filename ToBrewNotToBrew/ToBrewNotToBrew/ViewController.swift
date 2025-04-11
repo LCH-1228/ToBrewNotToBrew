@@ -83,7 +83,12 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
             guard let self = self else { return }
             
             let alert = UIAlertController(title: "주문하기", message: "주문을 진행하시겠습니까?", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "확인", style: .default))
+            alert.addAction(UIAlertAction(title: "확인", style: .default){ action in
+                self.orderItem.removeAll() //장바구니 비우기
+                self.selectedMenu.removeAll() // 메뉴 수량 딕셔너리 초기화
+                self.orderTableView.updateOrders([]) // 장바구니 갱신(명시적으로 빈 배열을 전달시킴)
+                self.homeView.paymentAmount = 0 //금액 0원 처리
+            })
             alert.addAction(UIAlertAction(title: "취소", style: .cancel))
             
             self.present(alert, animated: true)
