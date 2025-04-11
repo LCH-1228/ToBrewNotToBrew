@@ -18,7 +18,14 @@ class HomeView: UIView {
     
     var paymentAmount: Int = 0 {
         didSet {
-            paymentAmountLabel.text = "\(paymentAmount) 원"
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .decimal
+            let formatted = formatter.string(for: paymentAmount)!
+            
+            
+            paymentAmountLabel.text = "\(formatted) 원"
+            
+            
             orderButton.isEnabled = paymentAmount > 0
             orderButton.alpha = paymentAmount > 0 ? 1.0 : 0.5
         }
