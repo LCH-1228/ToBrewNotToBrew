@@ -56,7 +56,7 @@ class HomeView: UIView {
             .forEach { stackView.addArrangedSubview($0) }
         
         
-        headerLogoImage.image = UIImage(named: "test")
+        headerLogoImage.image = UIImage(named: "headingLogo")
         headerLogoImage.contentMode = .scaleAspectFit
         
         stackView.axis = .vertical

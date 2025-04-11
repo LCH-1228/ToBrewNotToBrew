@@ -7,7 +7,7 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
     let orderTableView = TableView()
     let homeView = HomeView()
     let categoryView = CategoryView()
-    let myView = MenuCollectionView()
+    let collectionView = MenuCollectionView()
     
     
     // 비어있는 아이템 배열 생성
@@ -47,7 +47,7 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
         
         self.view = homeView
         homeView.firstView.addSubview(categoryView)
-        homeView.secondView.addSubview(myView)
+        homeView.secondView.addSubview(collectionView)
         homeView.thirdView.addSubview(orderTableView)
         
         // thirdView의 크기가 한정되어 있어도, 테이블 뷰의 크기대로 들어감.
@@ -60,11 +60,11 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
         currentMenu = menus.filter({$0.category == .toBrew})
         
         //컬렉션 뷰에 표시할 데이터 전달
-        myView.menus = currentMenu
+        collectionView.menus = currentMenu
         
         
         //collectionView에서 클릭된 cell 확인을 위한 delegate 지정
-        myView.delegate = self
+        collectionView.delegate = self
         
         categoryView.snp.makeConstraints {
             $0.top.equalTo(homeView.firstView.snp.top).offset(4)
@@ -72,7 +72,7 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
             $0.height.equalTo(52)
         }
         
-        myView.snp.makeConstraints {
+        collectionView.snp.makeConstraints {
             $0.top.equalTo(homeView.secondView.snp.top).offset(20)
             $0.leading.equalTo(homeView.secondView.snp.leading)
             $0.trailing.equalTo(homeView.secondView.snp.trailing)
@@ -150,10 +150,10 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
         switch isToBrew {
         case true:
             currentMenu = menus.filter({$0.category == .toBrew})
-            myView.menus = currentMenu
+            collectionView.menus = currentMenu
         case false:
             currentMenu = menus.filter({$0.category == .notToBrew})
-            myView.menus = currentMenu
+            collectionView.menus = currentMenu
         }
     }
     

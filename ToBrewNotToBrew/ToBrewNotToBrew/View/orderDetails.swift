@@ -8,6 +8,10 @@
 import UIKit
 import SnapKit
 
+protocol MenuSelectionDelegate: AnyObject {
+    func didSelectMenuItem(_ item: OrderItem)
+}
+
 
 class TableView: UIView {
     
