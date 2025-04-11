@@ -44,7 +44,7 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
         print("뷰컨 로딩 완료")
         
         view.backgroundColor = .white
-
+        
         self.view = homeView
         homeView.firstView.addSubview(categoryView)
         homeView.secondView.addSubview(myView)
@@ -53,7 +53,7 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
         // thirdView의 크기가 한정되어 있어도, 테이블 뷰의 크기대로 들어감.
         // 테이블 뷰의 크기대로 버팀.
         homeView.thirdView.setContentCompressionResistancePriority(.required, for: .vertical)
-
+        
         categoryView.delegate = self
         
         //컬렉션뷰에 표시할 데이터 필터링
@@ -97,7 +97,7 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
         orderTableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
-//         더미 데이터를 받아와서 updateOrders 메서드 실행
+        //         더미 데이터를 받아와서 updateOrders 메서드 실행
         orderTableView.updateOrders(orderItem)
         
         
@@ -109,6 +109,41 @@ class ViewController: UIViewController, CategoryViewDelegate, MenuCollectionView
             self.orderTableView.updateOrders([]) // 장바구니 갱신(명시적으로 빈 배열을 전달시킴)
             self.homeView.paymentAmount = 0 //금액 0원 처리
         }
+        orderTableView.plusButtonAction = { [weak self] index in
+            guard let self = self else { return }
+            
+            self.orderItem[index].quantity += 1
+            self.orderTableView.updateOrders(self.orderItem)
+            
+            var totalPrice = 0
+            for item in self.orderItem {
+                totalPrice += item.price * item.quantity
+            }
+            self.homeView.paymentAmount = totalPrice
+        }
+        
+        orderTableView.plusButtonAction = { [weak self] index in
+            guard let self = self else { return }
+
+            self.orderItem[index].quantity += 1        // 수량 1 증가
+            self.orderTableView.updateOrders(self.orderItem)  // 테이블뷰 갱신
+            self.updatePaymentAmount()                 // 결제 금액 갱신
+        }
+
+        orderTableView.minuesButtonAction = { [weak self] index in
+            guard let self = self else { return }
+
+            if self.orderItem[index].quantity > 1 {
+                self.orderItem[index].quantity -= 1     // 수량 1 감소
+            } else {
+                self.orderItem.remove(at: index)        // 수량 0이면 삭제
+            }
+            self.orderTableView.updateOrders(self.orderItem)  // 테이블뷰 갱신
+            self.updatePaymentAmount()                 // 결제 금액 갱신
+        }
+    }
+    private func updatePaymentAmount() {
+        homeView.paymentAmount = orderItem.reduce(0) { $0 + $1.price * $1.quantity }
     }
     
     func categoryView(_ view: CategoryView, didSelectCategory isToBrew: Bool) {

@@ -18,6 +18,9 @@ class TableView: UIView {
     var TrashTapped: (() -> Void)? //viewcontroller로 이벤트 전달을 위한 클로저
     // tableviewheader -> tablevoew -> viewcontroller 로 이벤트를 전달하기 위한 중간다리 역할을 함
     
+    var plusButtonAction: ((Int) -> Void)?
+    var minuesButtonAction: ((Int) -> Void)?
+    
     var totalCount: Int = 0 {
         didSet {
             totalCountLabel.text = "총 \(totalCount) 개"
@@ -113,18 +116,25 @@ extension TableView: UITableViewDelegate, UITableViewDataSource {
         }
         cell.backgroundColor = .whiteSmokeImageFrame
         
-        if orderItems.count == 0 { // 장바구니에 아무것도 없을 때
+        if orderItems.count == 0 {
             cell.basicConfigure()
             tableView.separatorStyle = .none
-            return cell
-            
         } else {
             let item = orderItems[indexPath.row]
             cell.purchaseConfigure(with: item)
             tableView.separatorStyle = .singleLine
-            return cell
+            
+            cell.plusButtonTapped = { [weak self] in
+                guard let self = self else { return }
+                self.plusButtonAction?(indexPath.row) // viewcontroller로 몇 번째 셀인지 전달
+            }
+
+            cell.minueButtonTapped = { [weak self] in
+                guard let self = self else { return }
+                self.minuesButtonAction?(indexPath.row)
+            }
         }
-        
+        return cell
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -154,6 +164,9 @@ class OrderItemCell: UITableViewCell {
     let plusButton = UIButton() // 플러스 버튼
     let quantityLabel = UILabel() // 수량
     
+    var plusButtonTapped: (() -> Void)?
+    var minueButtonTapped: (() -> Void)?
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         basicSetupUI()
@@ -170,7 +183,8 @@ class OrderItemCell: UITableViewCell {
             contentView.addSubview($0)
             $0.isHidden = true // 처음엔 안보이게
         }
-        
+        minueButton.addTarget(self, action: #selector(minueTapped), for: .touchUpInside)
+        plusButton.addTarget(self, action: #selector(plusTapped), for: .touchUpInside)
         
         // 카트 이미지 UI 설정
         cartImageView.contentMode = .scaleAspectFit
@@ -251,9 +265,14 @@ class OrderItemCell: UITableViewCell {
             $0.leading.equalTo(minueButton.snp.trailing).offset(16)
             $0.centerY.equalTo(coffeeImageView.snp.centerY)
         }
-       
     }
-    
+    @objc func plusTapped() {
+        plusButtonTapped?() //tableview로 이벤트 전달
+    }
+
+    @objc func minueTapped() {
+        minueButtonTapped?()
+    }
     
     func basicConfigure() {
         statusLabel.text = "장바구니가 비어있습니다."
