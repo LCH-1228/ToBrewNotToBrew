@@ -1,3 +1,5 @@
+
+
 # To Brew Not To Brew
 
 # 목차
@@ -49,9 +51,9 @@ To Brew / Not To Brew 메뉴 카테고리 구분
 # 기술스택
 | 종류 | 내용 |
 |------|------|
-| Language | Swift |
-| IDE | Xcode |
-| UI | UIKit + SnapKit |
+| Language | Swift 5 |
+| IDE | Xcode16 |
+| UI | UIKit + SnapKit 5.7.1 |
 | 패턴 | Delegate Pattern |
 | Version Control | Git / GitHub |
 
@@ -75,18 +77,26 @@ ViewController
 
 # 프로젝트 파일 구조
 ```
- ToBrewNotToBrew
- ┣  View
- ┃ ┣  CategoryView.swift
- ┃ ┣  HomeView.swift
- ┃ ┣  MenuCollectionView.swift
- ┃ ┗  orderDetails.swift
- ┣  Model
- ┃ ┗  model.swift
- ┣  Controller
- ┃ ┣  ViewController.swift
- ┃ ┗  SplashViewController.swift
- ┣  Protocol.swift
+ToBrewNotToBrew
+├── README.md
+└── ToBrewNotToBrew
+    ├── ToBrewNotToBrew
+    │   ├── AppDelegate.swift
+    │   ├── Assets.xcassets
+    │   ├── Controller
+    │   │   ├── SplashViewController.swift
+    │   │   └── ViewController.swift
+    │   ├── Font
+    │   ├── Info.plist
+    │   ├── Model
+    │   │   └── Model.swift
+    │   ├── SceneDelegate.swift
+    │   └── View
+    │       ├── CategoryView.swift
+    │       ├── HomeView.swift
+    │       ├── MenuCollectionView.swift
+    │       └── orderDetails.swift
+    └── ToBrewNotToBrew.xcodeproj
 ```
 
 
@@ -96,4 +106,4 @@ ViewController
 | CategoryView 버튼 그림자 짤림 | ViewController에서 CategoryViewdml top offset을 4로 설정하고,<br> HomeView에서 firstView height를 60으로 설정하여 버튼 위아래의 그림자 공간 확보 | 레이아웃 관련 문제 |
 | 주문하기 버튼 작동 버그 | 주문하기 버튼이 결제예정금액이 0일 때는 비활성화, 0이 아닐 때는 비활성화 되어야하는데 동작이 되지 않았음. didset을 이용하여 결제예정금액에 따라 버튼 활성화 여부가 바뀌도록 개선 | UI 상태 동기화 문제 |
 | 총 수량 변경 불능 | 기존 didSet에 총 수량을 갱신하는 메서드를 넣어 값이 변경될 때 마다 메서드를 실행시킴. 해당 메서드를 통해 누적된 총 수량을 보여주도록 하여 코드를 개선함. | didSet 연동 |
-|  |  |  |
+| 메뉴이름 사라짐 | 코드 수정중 불필요한 제약조건으로 생각한 Constraints 삭제로 인한 문제 Constraints 원상복구 | 레이아웃 관련 문제 |
